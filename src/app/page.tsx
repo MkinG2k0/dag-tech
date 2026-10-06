@@ -1,7 +1,9 @@
+import Image from "next/image";
 import { ContactForm } from "@/components/contact-form";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { QuizForm } from "@/components/quiz-form";
+import { siteConfig } from "@/lib/site";
 
 const services = [
   {
@@ -28,31 +30,42 @@ const services = [
 
 const projects = [
   {
-    code: "PROJECT 01",
-    mock: "Ваш готовый продукт",
-    mockClass: "",
-    tag: "Mobile / SaaS",
-    title: "Название проекта",
-    text: "Коротко: какую проблему клиента решили и какой результат получил бизнес.",
-    link: true,
+    featured: true,
+    tag: "Web / SaaS",
+    title: "Дневник медресе",
+    text: "Закрытый онлайн-дневник школы: группы, посещаемость, оценки, аналитика и роли для администрации, учителей и опекунов.",
+    image: "/projects/diary-analytics.webp",
+    imagePosition: "center top",
   },
   {
-    code: "PROJECT 02",
-    mock: "CRM / ERP",
-    mockClass: "alt",
-    tag: "Automation",
-    title: "Название проекта",
-    text: "Место для второго коммерческого кейса.",
-    link: false,
+    featured: false,
+    tag: "Android / AI",
+    title: "AI Food",
+    text: "Учёт питания по фото: искусственный интеллект оценивает калории и БЖУ и сохраняет приём в дневник.",
+    image: "/projects/ai-food.webp",
+    imagePosition: "center 18%",
+    href: "https://www.rustore.ru/catalog/app/com.aifood.app",
+    hrefLabel: "Открыть в RuStore →",
   },
   {
-    code: "PROJECT 03",
-    mock: "Mobile App",
-    mockClass: "alt2",
-    tag: "iOS / Android",
-    title: "Название проекта",
-    text: "Место для третьего коммерческого кейса.",
-    link: false,
+    featured: false,
+    tag: "Android / Fitness",
+    title: "Подход",
+    text: "Дневник силовых тренировок: подходы, вес, повторы, графики прогресса и таймер отдыха. Данные остаются на устройстве.",
+    image: "/projects/ai-fit.webp",
+    imagePosition: "center 20%",
+    href: "https://www.rustore.ru/catalog/app/com.aifit.fit",
+    hrefLabel: "Открыть в RuStore →",
+  },
+  {
+    featured: false,
+    tag: "Android / Offline",
+    title: "VoiceRide Camera",
+    text: "Камера для мотошлема с голосовым управлением. Старт, стоп и фото — голосом, без интернета и без аккаунта.",
+    image: "/projects/voiceride.webp",
+    imagePosition: "center 22%",
+    href: "https://www.rustore.ru/catalog/app/ru.mk.voiceride",
+    hrefLabel: "Открыть в RuStore →",
   },
 ];
 
@@ -197,25 +210,46 @@ export default function Home() {
               <h2>То, что уже работает</h2>
             </div>
             <p>
-              Секция подготовлена под будущие кейсы. Замените карточки своими
-              проектами, скриншотами и результатами.
+              Мобильные приложения в RuStore и закрытый школьный дневник —
+              продукты, которые уже пользуются.
             </p>
           </div>
           <div className="projects">
             {projects.map((project) => (
               <article
-                className={project.link ? "project featured" : "project"}
-                key={project.code}
+                className={project.featured ? "project featured" : "project"}
+                key={project.title}
               >
-                <div className={`mock ${project.mockClass}`.trim()}>
-                  <span>{project.code}</span>
-                  <b>{project.mock}</b>
+                <div className="mock">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes={
+                      project.featured
+                        ? "(max-width: 900px) 100vw, 1200px"
+                        : "(max-width: 900px) 100vw, 33vw"
+                    }
+                    preload={project.featured}
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: project.imagePosition,
+                    }}
+                  />
                 </div>
                 <div className="project-copy">
                   <small>{project.tag}</small>
                   <h3>{project.title}</h3>
                   <p>{project.text}</p>
-                  {project.link ? <a href="#contact">Кейс появится здесь →</a> : null}
+                  {project.href ? (
+                    <a
+                      href={project.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {project.hrefLabel}
+                    </a>
+                  ) : null}
                 </div>
               </article>
             ))}
@@ -266,6 +300,14 @@ export default function Home() {
               Опишите идею в двух словах. Свяжемся, уточним детали и предложим
               оптимальный формат запуска.
             </p>
+            <a
+              className="contact-phone"
+              href={siteConfig.phone.href}
+              aria-label={`Позвонить ${siteConfig.phone.display}`}
+            >
+              <small>Номер для связи</small>
+              {siteConfig.phone.display}
+            </a>
           </div>
           <ContactForm />
         </section>

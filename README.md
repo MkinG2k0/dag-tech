@@ -19,7 +19,7 @@ npm run dev
 
 ## Формы
 
-Заявки с лендинга уходят в `POST /api/contact` и `POST /api/quiz` на `dagtech.studio@gmail.com`.
+Заявки с лендинга уходят в `POST /api/contact` и `POST /api/quiz` на `dagtech.studio@gmail.com` через Gmail SMTP (`SMTP_USER` / `SMTP_PASS`).
 
 ## SEO
 

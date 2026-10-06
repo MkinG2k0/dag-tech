@@ -13,6 +13,7 @@ export function JsonLd() {
         legalName: siteConfig.legalName,
         url,
         description: siteConfig.description,
+        telephone: siteConfig.phone.e164,
         inLanguage: "ru",
         areaServed: "RU",
         priceRange: "₽₽₽",
