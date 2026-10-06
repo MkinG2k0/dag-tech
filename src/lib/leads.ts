@@ -1,3 +1,5 @@
+import nodemailer from "nodemailer";
+
 type LeadPayload = Record<string, unknown>;
 
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL ?? "dagtech.studio@gmail.com";
@@ -110,40 +112,29 @@ async function sendViaResend(subject: string, fields: Record<string, string>) {
   return true;
 }
 
-async function sendViaInbox(subject: string, fields: Record<string, string>) {
-  const replyTo = fields.contact?.includes("@") ? fields.contact : undefined;
-  const payload: Record<string, string> = {
-    _subject: subject,
-    _template: "table",
-    _captcha: "false",
-    ...Object.fromEntries(
-      Object.entries(fields).map(([key, value]) => [
-        FIELD_LABELS[key] ?? key,
-        value,
-      ]),
-    ),
-  };
+async function sendViaGmail(subject: string, fields: Record<string, string>) {
+  const user = process.env.SMTP_USER ?? CONTACT_EMAIL;
+  const pass = process.env.SMTP_PASS;
 
-  if (replyTo) {
-    payload._replyto = replyTo;
+  if (!pass) {
+    return false;
   }
 
-  const response = await fetch(
-    `https://formsubmit.co/ajax/${encodeURIComponent(CONTACT_EMAIL)}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(payload),
-    },
-  );
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: { user, pass },
+  });
 
-  if (!response.ok) {
-    console.error("[lead:email]", response.status, await response.text());
-    throw new Error("Не удалось отправить заявку на почту.");
-  }
+  await transporter.sendMail({
+    from: `DAG TECH <${user}>`,
+    to: CONTACT_EMAIL,
+    replyTo: fields.contact?.includes("@") ? fields.contact : undefined,
+    subject,
+    text: formatText(subject, fields),
+    html: formatHtml(subject, fields),
+  });
 
   return true;
 }
@@ -176,8 +167,8 @@ export async function deliverLead(
 ) {
   const payload = filledFields(fields);
   const emailed =
-    (await sendViaResend(subject, payload)) ||
-    (await sendViaInbox(subject, payload));
+    (await sendViaGmail(subject, payload)) ||
+    (await sendViaResend(subject, payload));
 
   await sendViaWebhook(subject, payload);
 

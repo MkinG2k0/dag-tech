@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { deliverLead, parseJsonBody, readString } from "@/lib/leads";
 
+export const maxDuration = 20;
+
 export async function POST(request: Request) {
   try {
     const body = await parseJsonBody(request);
