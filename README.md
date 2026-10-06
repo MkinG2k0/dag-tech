@@ -19,7 +19,7 @@ npm run dev
 
 ## Формы
 
-Заявки с лендинга уходят в `POST /api/contact` и `POST /api/quiz`. Чтобы получать их, задайте `CONTACT_WEBHOOK_URL` в `.env.local` или в переменных Vercel.
+Заявки с лендинга уходят в `POST /api/contact` и `POST /api/quiz` на `dagtech.studio@gmail.com`.
 
 ## SEO
 

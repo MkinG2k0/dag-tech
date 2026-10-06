@@ -41,9 +41,7 @@ export async function POST(request: Request) {
     const result = await deliverLead("Новый бриф с сайта DAG TECH", fields);
     return NextResponse.json({
       ...result,
-      message: result.delivered
-        ? "Бриф отправлен. Мы свяжемся с вами."
-        : result.message,
+      message: "Бриф отправлен. Мы свяжемся с вами.",
     });
   } catch {
     return NextResponse.json(
