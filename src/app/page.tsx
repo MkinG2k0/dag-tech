@@ -1,4 +1,5 @@
 import { ContactForm } from "@/components/contact-form";
+import { HeroLens } from "@/components/hero-lens";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { Projects } from "@/components/projects";
@@ -61,6 +62,7 @@ export default function Home() {
       <Header />
       <main id="top">
         <section className="hero" id="main">
+          <HeroLens />
           <div className="hero-copy">
             <p className="eyebrow">Разработка ПО для бизнеса</p>
             <h1>
@@ -79,7 +81,7 @@ export default function Home() {
                 Посмотреть решения
               </a>
             </div>
-            <div className="stats">
+            <div className="stats glass">
               <div>
                 <b>от 200 000 ₽</b>
                 <span>старт проекта</span>
@@ -152,7 +154,7 @@ export default function Home() {
           </div>
           <div className="cards">
             {services.map((service) => (
-              <article key={service.title}>
+              <article className="glass" key={service.title}>
                 <div className="icon" aria-hidden="true">
                   {service.icon}
                 </div>
@@ -186,7 +188,7 @@ export default function Home() {
           </div>
           <div className="timeline">
             {process.map((item) => (
-              <div key={item.n}>
+              <div className="glass" key={item.n}>
                 <b>{item.n}</b>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -203,7 +205,7 @@ export default function Home() {
               Ответьте на несколько вопросов. Мы получим готовый мини-бриф и
               сможем быстрее понять задачу до созвона.
             </p>
-            <div className="quiz-benefit">
+            <div className="quiz-benefit glass">
               <b>После отправки</b>
               <span>получим бриф и ответим в течение дня.</span>
             </div>

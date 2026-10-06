@@ -178,7 +178,7 @@ export function QuizForm() {
   }
 
   return (
-    <form className="quiz-card" onSubmit={onSubmit} noValidate>
+    <form className="quiz-card glass" onSubmit={onSubmit} noValidate>
       <div className="progress" aria-hidden="true">
         <i style={{ width: `${progress}%` }} />
       </div>
@@ -340,7 +340,7 @@ export function QuizForm() {
       <div className="quiz-actions">
         <button
           type="button"
-          className="btn ghost dark"
+          className="btn ghost"
           onClick={() => setCurrent((step) => Math.max(step - 1, 0))}
           style={{ visibility: current === 0 ? "hidden" : "visible" }}
         >

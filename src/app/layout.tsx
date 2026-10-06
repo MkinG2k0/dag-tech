@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Space_Grotesk } from "next/font/google";
+import { Manrope, Unbounded } from "next/font/google";
 import { JsonLd } from "@/components/json-ld";
 import { getSiteUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
@@ -11,11 +11,12 @@ const manrope = Manrope({
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin", "latin-ext"],
-  weight: ["500", "600", "700"],
-  variable: "--font-space",
+const unbounded = Unbounded({
+  subsets: ["latin", "cyrillic"],
+  weight: ["600"],
+  variable: "--font-display",
   display: "swap",
+  preload: true,
 });
 
 const siteUrl = getSiteUrl();
@@ -71,15 +72,21 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f1efe8",
+  themeColor: "#e7f3f6",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ru" className={`${manrope.variable} ${spaceGrotesk.variable}`}>
+    <html lang="ru" className={`${manrope.variable} ${unbounded.variable}`}>
       <body>
+        <div className="atmosphere" aria-hidden="true">
+          <span className="orb orb-cyan" />
+          <span className="orb orb-gold" />
+          <span className="orb orb-lilac" />
+          <span className="sheen" />
+        </div>
         <JsonLd />
         {children}
       </body>

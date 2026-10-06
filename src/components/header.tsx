@@ -41,6 +41,9 @@ export function Header() {
           </a>
         ))}
         <div className="nav-panel-contacts">
+          <a className="btn btn-small" href="/#contact" onClick={close}>
+            Обсудить проект
+          </a>
           <a href={siteConfig.phone.href} onClick={close}>
             {siteConfig.phone.display}
           </a>

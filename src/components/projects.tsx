@@ -34,7 +34,7 @@ export function Projects({ projects }: { projects: Project[] }) {
         {projects.map((project) => (
           <button
             type="button"
-            className="project"
+            className="project glass"
             key={project.id}
             onClick={() => setActiveId(project.id)}
             aria-haspopup="dialog"

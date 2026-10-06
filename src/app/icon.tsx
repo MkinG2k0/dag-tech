@@ -14,7 +14,7 @@ export default function Icon() {
         style={{
           width: "100%",
           height: "100%",
-          background: "#f1efe8",
+          background: "#e7f3f6",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -22,11 +22,11 @@ export default function Icon() {
       >
         <div
           style={{
-            width: 16,
-            height: 16,
-            background: "#d8ff3e",
-            border: "2px solid #11110f",
-            transform: "rotate(45deg)",
+            width: 18,
+            height: 18,
+            borderRadius: 18,
+            background: "linear-gradient(135deg, #7eeaf6 0%, #2ec4d6 45%, #e2b86a 100%)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.85)",
           }}
         />
       </div>
