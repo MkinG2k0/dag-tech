@@ -1,12 +1,14 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { ConsentField } from "@/components/consent-field";
 
 type ContactState = {
   name: string;
   contact: string;
   message: string;
   website: string;
+  consent: boolean;
 };
 
 const initialState: ContactState = {
@@ -14,6 +16,7 @@ const initialState: ContactState = {
   contact: "",
   message: "",
   website: "",
+  consent: false,
 };
 
 export function ContactForm() {
@@ -35,6 +38,11 @@ export function ContactForm() {
       return;
     }
 
+    if (!values.consent) {
+      setError("Нужно согласие на обработку персональных данных.");
+      return;
+    }
+
     setPending(true);
     setError("");
     setStatus("");
@@ -43,7 +51,13 @@ export function ContactForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          name: values.name,
+          contact: values.contact,
+          message: values.message,
+          website: values.website,
+          consent: values.consent,
+        }),
       });
       const data = (await response.json()) as { message?: string };
 
@@ -101,6 +115,10 @@ export function ContactForm() {
           onChange={(event) => update("website", event.target.value)}
         />
       </label>
+      <ConsentField
+        checked={values.consent}
+        onChange={(value) => update("consent", value)}
+      />
       <button className="btn" type="submit" disabled={pending}>
         {pending ? "Отправляем..." : "Отправить заявку"}
       </button>

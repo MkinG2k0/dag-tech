@@ -14,8 +14,28 @@ export function JsonLd() {
         url,
         description: siteConfig.description,
         telephone: siteConfig.phone.e164,
+        email: siteConfig.email.display,
         inLanguage: "ru",
-        areaServed: "RU",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: siteConfig.geo.city,
+          addressRegion: siteConfig.geo.region,
+          addressCountry: siteConfig.geo.countryCode,
+        },
+        areaServed: [
+          {
+            "@type": "City",
+            name: siteConfig.geo.city,
+          },
+          {
+            "@type": "AdministrativeArea",
+            name: siteConfig.geo.region,
+          },
+          {
+            "@type": "Country",
+            name: siteConfig.geo.country,
+          },
+        ],
         priceRange: "₽₽₽",
         knowsAbout: [
           "Мобильные приложения",

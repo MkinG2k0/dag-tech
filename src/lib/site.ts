@@ -20,7 +20,7 @@ export const siteConfig = {
   tagline: "Цифровые продукты для бизнеса",
   title: "DAG TECH — цифровые продукты для бизнеса",
   description:
-    "Разработка мобильных приложений, CRM, личных кабинетов и автоматизации под ключ. DAG TECH проектирует и запускает софт, который решает конкретную задачу бизнеса.",
+    "Разработка мобильных приложений, CRM, личных кабинетов и автоматизации под ключ. DAG TECH в Махачкале проектирует и запускает софт для бизнеса по всей России.",
   locale: "ru_RU",
   language: "ru",
   phone: {
@@ -28,6 +28,19 @@ export const siteConfig = {
     href: "tel:+79034286198",
     e164: "+79034286198",
   },
+  email: {
+    display: "dagtech.studio@gmail.com",
+    href: "mailto:dagtech.studio@gmail.com",
+  },
+  geo: {
+    city: "Махачкала",
+    region: "Республика Дагестан",
+    country: "Россия",
+    countryCode: "RU",
+    display: "Махачкала, Дагестан",
+    served: "Работаем по всей России",
+  },
+  privacyPath: "/privacy",
   keywords: [
     "разработка мобильных приложений",
     "разработка CRM",
@@ -37,11 +50,13 @@ export const siteConfig = {
     "Telegram Mini Apps",
     "MVP под ключ",
     "DAG TECH",
+    "разработка Махачкала",
+    "разработка Дагестан",
   ],
 };
 
 export const navLinks = [
-  { href: "#services", label: "Услуги" },
-  { href: "#solutions", label: "Наши решения" },
-  { href: "#process", label: "Как работаем" },
+  { href: "/#services", label: "Услуги" },
+  { href: "/#solutions", label: "Наши решения" },
+  { href: "/#process", label: "Как работаем" },
 ] as const;

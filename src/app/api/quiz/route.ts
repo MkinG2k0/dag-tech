@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { deliverLead, parseJsonBody, readString } from "@/lib/leads";
+import { deliverLead, hasConsent, parseJsonBody, readString } from "@/lib/leads";
 
 export const maxDuration = 20;
 
@@ -36,6 +36,13 @@ export async function POST(request: Request) {
     ) {
       return NextResponse.json(
         { message: "Заполните обязательные поля брифа." },
+        { status: 400 },
+      );
+    }
+
+    if (!hasConsent(body)) {
+      return NextResponse.json(
+        { message: "Нужно согласие на обработку персональных данных." },
         { status: 400 },
       );
     }

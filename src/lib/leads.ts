@@ -27,6 +27,11 @@ export function readString(data: LeadPayload, key: string) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+export function hasConsent(data: LeadPayload) {
+  const value = data.consent;
+  return value === true || value === "true" || value === "on" || value === "1";
+}
+
 export async function parseJsonBody(request: Request) {
   const body = await request.json();
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import { ConsentField } from "@/components/consent-field";
 
 const steps = [
   { id: 1, title: "Что хотите разработать?" },
@@ -50,6 +51,7 @@ type QuizState = {
   company: string;
   examples: string;
   website: string;
+  consent: boolean;
 };
 
 const initialState: QuizState = {
@@ -64,6 +66,7 @@ const initialState: QuizState = {
   company: "",
   examples: "",
   website: "",
+  consent: false,
 };
 
 function isStepValid(step: number, values: QuizState) {
@@ -81,7 +84,11 @@ function isStepValid(step: number, values: QuizState) {
     case 5:
       return Boolean(values.deadline);
     case 6:
-      return values.name.trim().length > 0 && values.contact.trim().length > 0;
+      return (
+        values.name.trim().length > 0 &&
+        values.contact.trim().length > 0 &&
+        values.consent
+      );
     default:
       return false;
   }
@@ -105,9 +112,27 @@ export function QuizForm() {
     setError("");
   }
 
+  function stepError(step: number) {
+    if (
+      step === lastStep &&
+      values.name.trim() &&
+      values.contact.trim() &&
+      !values.consent
+    ) {
+      return "Нужно согласие на обработку персональных данных.";
+    }
+
+    if (!isStepValid(step, values)) {
+      return "Ответьте на вопрос, чтобы продолжить.";
+    }
+
+    return "";
+  }
+
   function next() {
-    if (!isStepValid(current, values)) {
-      setError("Ответьте на вопрос, чтобы продолжить.");
+    const message = stepError(current);
+    if (message) {
+      setError(message);
       return;
     }
 
@@ -118,8 +143,9 @@ export function QuizForm() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!isStepValid(current, values)) {
-      setError("Ответьте на вопрос, чтобы продолжить.");
+    const message = stepError(current);
+    if (message) {
+      setError(message);
       return;
     }
 
@@ -304,6 +330,10 @@ export function QuizForm() {
                 onChange={(event) => update("website", event.target.value)}
               />
             </label>
+            <ConsentField
+              checked={values.consent}
+              onChange={(value) => update("consent", value)}
+            />
           </div>
         )}
       </div>

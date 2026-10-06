@@ -42,9 +42,9 @@ export default function OpenGraphImage() {
             style={{
               fontSize: 72,
               fontWeight: 700,
-              lineHeight: 0.92,
+              lineHeight: 1.02,
               textTransform: "uppercase",
-              letterSpacing: -3,
+              letterSpacing: -1.4,
               maxWidth: 920,
             }}
           >
