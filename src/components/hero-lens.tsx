@@ -18,34 +18,40 @@ export function HeroLens() {
     const hero = root?.parentElement;
     if (!root || !lens || !inner || !clone || !hero) return;
 
+    const rootNode: HTMLDivElement = root;
+    const lensNode: HTMLDivElement = lens;
+    const innerNode: HTMLDivElement = inner;
+    const cloneNode: HTMLDivElement = clone;
+    const heroNode: HTMLElement = hero;
+
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     const fine = window.matchMedia("(pointer: fine)");
 
     function buildClone() {
-      clone.replaceChildren();
-      for (const child of Array.from(hero.children)) {
-        if (child === root) continue;
-        clone.appendChild(child.cloneNode(true));
+      cloneNode.replaceChildren();
+      for (const child of Array.from(heroNode.children)) {
+        if (child === rootNode) continue;
+        cloneNode.appendChild(child.cloneNode(true));
       }
-      clone.setAttribute("inert", "");
-      clone.style.width = `${hero.offsetWidth}px`;
-      clone.style.height = `${hero.offsetHeight}px`;
+      cloneNode.setAttribute("inert", "");
+      cloneNode.style.width = `${heroNode.offsetWidth}px`;
+      cloneNode.style.height = `${heroNode.offsetHeight}px`;
     }
 
     buildClone();
     const ro = new ResizeObserver(buildClone);
-    ro.observe(hero);
+    ro.observe(heroNode);
 
     let raf = 0;
-    let targetX = hero.offsetWidth * 0.36;
-    let targetY = hero.offsetHeight * 0.4;
+    let targetX = heroNode.offsetWidth * 0.36;
+    let targetY = heroNode.offsetHeight * 0.4;
     let x = targetX;
     let y = targetY;
     let inside = true;
     const start = performance.now();
 
     function onPointer(event: PointerEvent) {
-      const box = hero.getBoundingClientRect();
+      const box = heroNode.getBoundingClientRect();
       targetX = event.clientX - box.left;
       targetY = event.clientY - box.top;
       inside =
@@ -58,8 +64,8 @@ export function HeroLens() {
     function frame(now: number) {
       if (!fine.matches) {
         const t = (now - start) / 1000;
-        targetX = hero.offsetWidth * (0.34 + Math.sin(t * 0.35) * 0.2);
-        targetY = hero.offsetHeight * (0.42 + Math.cos(t * 0.27) * 0.14);
+        targetX = heroNode.offsetWidth * (0.34 + Math.sin(t * 0.35) * 0.2);
+        targetY = heroNode.offsetHeight * (0.42 + Math.cos(t * 0.27) * 0.14);
         inside = true;
       }
 
@@ -71,15 +77,15 @@ export function HeroLens() {
       x = nx;
       y = ny;
 
-      const size = lens.offsetWidth;
+      const size = lensNode.offsetWidth;
       const speed = Math.hypot(vx, vy);
       const stretch = Math.min(speed * 0.03, 0.08);
       const angle = Math.atan2(vy, vx);
 
-      lens.style.opacity = inside ? "1" : "0";
-      lens.style.transform = `translate3d(${x - size / 2}px, ${y - size / 2}px, 0) rotate(${angle}rad) scale(${1 + stretch}, ${1 - stretch * 0.4})`;
-      inner.style.transform = `rotate(${-angle}rad)`;
-      clone.style.transform = `translate3d(${size / 2 - x}px, ${size / 2 - y}px, 0)`;
+      lensNode.style.opacity = inside ? "1" : "0";
+      lensNode.style.transform = `translate3d(${x - size / 2}px, ${y - size / 2}px, 0) rotate(${angle}rad) scale(${1 + stretch}, ${1 - stretch * 0.4})`;
+      innerNode.style.transform = `rotate(${-angle}rad)`;
+      cloneNode.style.transform = `translate3d(${size / 2 - x}px, ${size / 2 - y}px, 0)`;
       if (shine) {
         shine.style.transform = `translate(${-vx * 5}px, ${-vy * 6}px)`;
       }
@@ -89,15 +95,15 @@ export function HeroLens() {
 
     if (reduce.matches) {
       const size = 220;
-      lens.style.transform = `translate(${targetX - size / 2}px, ${targetY - size / 2}px)`;
-      clone.style.transform = `translate(${size / 2 - targetX}px, ${size / 2 - targetY}px)`;
-      lens.style.opacity = "1";
+      lensNode.style.transform = `translate(${targetX - size / 2}px, ${targetY - size / 2}px)`;
+      cloneNode.style.transform = `translate(${size / 2 - targetX}px, ${size / 2 - targetY}px)`;
+      lensNode.style.opacity = "1";
       return () => ro.disconnect();
     }
 
-    hero.addEventListener("pointermove", onPointer, { passive: true });
-    hero.addEventListener("pointerenter", onPointer, { passive: true });
-    hero.addEventListener("pointerleave", () => {
+    heroNode.addEventListener("pointermove", onPointer, { passive: true });
+    heroNode.addEventListener("pointerenter", onPointer, { passive: true });
+    heroNode.addEventListener("pointerleave", () => {
       inside = fine.matches ? false : true;
     });
     raf = requestAnimationFrame(frame);
@@ -105,8 +111,8 @@ export function HeroLens() {
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
-      hero.removeEventListener("pointermove", onPointer);
-      hero.removeEventListener("pointerenter", onPointer);
+      heroNode.removeEventListener("pointermove", onPointer);
+      heroNode.removeEventListener("pointerenter", onPointer);
     };
   }, []);
 
