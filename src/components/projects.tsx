@@ -1,32 +1,98 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Project, ProjectShot } from "@/lib/projects";
+
+const CLOSE_MS = 360;
+
+function scrollbarWidth() {
+  return Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+}
+
+function lockPageScroll() {
+  const html = document.documentElement;
+  if (!html.hasAttribute("data-scroll-lock")) {
+    html.style.setProperty("--scroll-lock", `${scrollbarWidth()}px`);
+    html.setAttribute("data-scroll-lock", "");
+  }
+  html.style.overflow = "hidden";
+  html.style.paddingRight = html.style.getPropertyValue("--scroll-lock");
+}
+
+function unlockPageScroll() {
+  const html = document.documentElement;
+  html.removeAttribute("data-scroll-lock");
+  html.style.removeProperty("--scroll-lock");
+  html.style.overflow = "";
+  html.style.paddingRight = "";
+}
 
 export function Projects({ projects }: { projects: Project[] }) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const closingRef = useRef(false);
   const active = projects.find((project) => project.id === activeId) ?? null;
 
-  useEffect(() => {
+  function closeDialog() {
     const dialog = dialogRef.current;
-    if (!dialog) return;
+    if (!dialog?.open || closingRef.current) return;
 
-    if (active) {
-      if (!dialog.open) dialog.showModal();
-      document.body.style.overflow = "hidden";
-      closeRef.current?.focus();
-    } else if (dialog.open) {
-      dialog.close();
-      document.body.style.overflow = "";
+    closingRef.current = true;
+    dialog.classList.add("is-closing");
+
+    const finish = () => {
+      if (!closingRef.current) return;
+      closingRef.current = false;
+      dialog.classList.remove("is-closing");
+      if (dialog.open) dialog.close();
+      unlockPageScroll();
+      setActiveId(null);
+    };
+
+    let fallback = 0;
+    const onEnd = (event: TransitionEvent) => {
+      if (event.target !== dialog) return;
+      dialog.removeEventListener("transitionend", onEnd);
+      window.clearTimeout(fallback);
+      finish();
+    };
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      finish();
+      return;
     }
 
+    dialog.addEventListener("transitionend", onEnd);
+    fallback = window.setTimeout(finish, CLOSE_MS);
+  }
+
+  useLayoutEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog || !active) return;
+
+    if (!dialog.open) {
+      lockPageScroll();
+      dialog.showModal();
+      lockPageScroll();
+      closeRef.current?.focus();
+    }
+
+    function onCancel(event: Event) {
+      event.preventDefault();
+      closeDialog();
+    }
+
+    dialog.addEventListener("cancel", onCancel);
     return () => {
-      document.body.style.overflow = "";
+      dialog.removeEventListener("cancel", onCancel);
     };
   }, [active]);
+
+  useEffect(() => {
+    return () => unlockPageScroll();
+  }, []);
 
   return (
     <>
@@ -34,7 +100,7 @@ export function Projects({ projects }: { projects: Project[] }) {
         {projects.map((project) => (
           <button
             type="button"
-            className="project glass"
+            className="project"
             key={project.id}
             onClick={() => setActiveId(project.id)}
             aria-haspopup="dialog"
@@ -57,10 +123,9 @@ export function Projects({ projects }: { projects: Project[] }) {
               )}
             </div>
             <div className="project-copy">
-              <small>{project.tag}</small>
               <h3>{project.title}</h3>
               <p>{project.summary}</p>
-              <span className="project-more">Смотреть →</span>
+              <span className="project-more">Смотреть</span>
             </div>
           </button>
         ))}
@@ -70,20 +135,18 @@ export function Projects({ projects }: { projects: Project[] }) {
         ref={dialogRef}
         className="project-dialog"
         aria-labelledby={active ? `project-title-${active.id}` : undefined}
-        onClose={() => setActiveId(null)}
         onClick={(event) => {
-          if (event.target === event.currentTarget) setActiveId(null);
+          if (event.target === event.currentTarget) closeDialog();
         }}
       >
         {active ? (
           <div className="project-dialog-card">
             <div className="project-dialog-head">
-              <small>{active.tag}</small>
               <button
                 ref={closeRef}
                 type="button"
                 className="project-dialog-close"
-                onClick={() => setActiveId(null)}
+                onClick={closeDialog}
               >
                 Закрыть
               </button>
@@ -112,16 +175,47 @@ export function Projects({ projects }: { projects: Project[] }) {
 
 function ShotSlider({ shots, title }: { shots: ProjectShot[]; title: string }) {
   const [index, setIndex] = useState(0);
-  const startX = useRef<number | null>(null);
-  const kind = shots[index]?.kind ?? "desktop";
-  const canSlide = shots.length > 1;
+  const [paged, setPaged] = useState(false);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  function prefersReduce() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function scrollTo(next: number) {
+    const root = scrollerRef.current;
+    const slide = root?.children[next] as HTMLElement | undefined;
+    if (!root || !slide) return;
+    root.scrollTo({
+      left: slide.offsetLeft,
+      behavior: prefersReduce() ? "auto" : "smooth",
+    });
+  }
 
   function go(delta: number) {
-    setIndex((current) => (current + delta + shots.length) % shots.length);
+    setIndex((current) => {
+      const next = Math.min(shots.length - 1, Math.max(0, current + delta));
+      scrollTo(next);
+      return next;
+    });
   }
 
   useEffect(() => {
-    if (!canSlide) return;
+    const root = scrollerRef.current;
+    if (!root) return;
+
+    const measure = () => {
+      setPaged(root.scrollWidth > root.clientWidth + 8);
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [shots.length]);
+
+  useEffect(() => {
+    if (!paged) return;
 
     function onKey(event: KeyboardEvent) {
       if (event.key === "ArrowRight") {
@@ -136,72 +230,58 @@ function ShotSlider({ shots, title }: { shots: ProjectShot[]; title: string }) {
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [canSlide, shots.length]);
+  }, [paged, shots.length]);
 
-  function onPointerDown(event: PointerEvent<HTMLDivElement>) {
-    startX.current = event.clientX;
-  }
-
-  function onPointerUp(event: PointerEvent<HTMLDivElement>) {
-    if (startX.current === null || !canSlide) return;
-    const delta = event.clientX - startX.current;
-    startX.current = null;
-    if (delta > 40) go(-1);
-    if (delta < -40) go(1);
+  function onScroll() {
+    const root = scrollerRef.current;
+    if (!root) return;
+    const slides = Array.from(root.children) as HTMLElement[];
+    let best = 0;
+    let distance = Infinity;
+    for (let i = 0; i < slides.length; i += 1) {
+      const next = Math.abs(slides[i].offsetLeft - root.scrollLeft);
+      if (next < distance) {
+        distance = next;
+        best = i;
+      }
+    }
+    setIndex(best);
   }
 
   return (
-    <div className={`shot-slider ${kind}`}>
-      <div className="shot-stage">
-        {canSlide ? (
+    <div className="shot-slider">
+      <div
+        ref={scrollerRef}
+        className="shot-film"
+        onScroll={onScroll}
+      >
+        {shots.map((shot) => (
+          <figure className={`shot-slide ${shot.kind}`} key={shot.src}>
+            <Image
+              src={shot.src}
+              alt={shot.alt}
+              fill
+              sizes={
+                shot.kind === "phone"
+                  ? "(max-width: 700px) 72vw, 240px"
+                  : "(max-width: 700px) 90vw, 720px"
+              }
+              style={{ objectFit: "cover", objectPosition: "center top" }}
+            />
+          </figure>
+        ))}
+      </div>
+      {paged ? (
+        <div className="shot-meta">
           <button
             type="button"
             className="shot-nav prev"
             onClick={() => go(-1)}
+            disabled={index === 0}
             aria-label="Предыдущий скриншот"
           >
-            ←
+            Назад
           </button>
-        ) : null}
-        <div
-          className={`shot-viewport ${kind}`}
-          onPointerDown={onPointerDown}
-          onPointerUp={onPointerUp}
-        >
-          <div
-            className="shot-track"
-            style={{ transform: `translateX(-${index * 100}%)` }}
-          >
-            {shots.map((shot) => (
-              <figure className="shot-slide" key={shot.src}>
-                <Image
-                  src={shot.src}
-                  alt={shot.alt}
-                  fill
-                  sizes={
-                    shot.kind === "phone"
-                      ? "(max-width: 700px) 70vw, 260px"
-                      : "(max-width: 700px) 90vw, 820px"
-                  }
-                  style={{ objectFit: "cover", objectPosition: "center top" }}
-                />
-              </figure>
-            ))}
-          </div>
-        </div>
-        {canSlide ? (
-          <button
-            type="button"
-            className="shot-nav next"
-            onClick={() => go(1)}
-            aria-label="Следующий скриншот"
-          >
-            →
-          </button>
-        ) : null}
-      </div>
-      {canSlide ? (
-        <div className="shot-meta">
           <div className="shot-dots" role="tablist" aria-label={`Скриншоты ${title}`}>
             {shots.map((shot, i) => (
               <button
@@ -210,13 +290,25 @@ function ShotSlider({ shots, title }: { shots: ProjectShot[]; title: string }) {
                 className={i === index ? "is-active" : ""}
                 aria-label={`Скриншот ${i + 1}`}
                 aria-current={i === index ? "true" : undefined}
-                onClick={() => setIndex(i)}
+                onClick={() => {
+                  setIndex(i);
+                  scrollTo(i);
+                }}
               />
             ))}
           </div>
           <span className="shot-count">
             {index + 1} / {shots.length}
           </span>
+          <button
+            type="button"
+            className="shot-nav next"
+            onClick={() => go(1)}
+            disabled={index === shots.length - 1}
+            aria-label="Следующий скриншот"
+          >
+            Дальше
+          </button>
         </div>
       ) : null}
     </div>

@@ -18,8 +18,7 @@ export default function PrivacyPage() {
         К содержанию
       </a>
       <Header />
-      <main id="policy" className="legal glass">
-        <p className="eyebrow">152-ФЗ</p>
+      <main id="policy" className="legal">
         <h1>Политика обработки персональных данных</h1>
         <p className="legal-lead">
           Настоящая политика описывает, какие данные собирает {siteConfig.name}{" "}

@@ -72,7 +72,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#e7f3f6",
+  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
 };
@@ -81,12 +81,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ru" className={`${manrope.variable} ${unbounded.variable}`}>
       <body>
-        <div className="atmosphere" aria-hidden="true">
-          <span className="orb orb-cyan" />
-          <span className="orb orb-gold" />
-          <span className="orb orb-lilac" />
-          <span className="sheen" />
-        </div>
         <JsonLd />
         {children}
       </body>

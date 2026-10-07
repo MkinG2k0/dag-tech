@@ -14,54 +14,75 @@ export default function OpenGraphImage() {
         style={{
           width: "100%",
           height: "100%",
-          background:
-            "radial-gradient(ellipse 70% 60% at 8% 0%, #c5eef5 0%, transparent 55%), radial-gradient(ellipse 50% 50% at 100% 10%, #f6e3c0 0%, transparent 50%), linear-gradient(180deg, #eef8fb 0%, #dceef3 100%)",
-          color: "#102632",
+          background: "#000000",
+          color: "#ffffff",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: 64,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
         <div
           style={{
+            position: "absolute",
+            width: 920,
+            height: 920,
+            borderRadius: 920,
+            border: "2px solid rgba(59, 130, 246, 0.7)",
+            left: 140,
+            top: -220,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            width: 680,
+            height: 680,
+            borderRadius: 680,
+            border: "1px solid rgba(244, 114, 182, 0.55)",
+            left: 260,
+            top: -80,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            width: 460,
+            height: 460,
+            borderRadius: 460,
+            border: "1px solid rgba(74, 222, 128, 0.45)",
+            left: 370,
+            top: 40,
+          }}
+        />
+        <div
+          style={{
+            position: "relative",
             display: "flex",
-            alignItems: "center",
-            gap: 14,
-            padding: "12px 18px",
-            borderRadius: 999,
-            background: "rgba(255,255,255,0.45)",
-            border: "1px solid rgba(255,255,255,0.7)",
-            width: "auto",
-            alignSelf: "flex-start",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            width: "100%",
+            height: "100%",
+            padding: 64,
           }}
         >
-          <div
-            style={{
-              width: 16,
-              height: 16,
-              borderRadius: 16,
-              background: "linear-gradient(135deg, #2ec4d6 0%, #e2b86a 100%)",
-            }}
-          />
-          <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: -1 }}>
+          <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -1 }}>
             DAG TECH
           </div>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <div
-            style={{
-              fontSize: 68,
-              fontWeight: 700,
-              lineHeight: 1.04,
-              letterSpacing: -1.8,
-              maxWidth: 940,
-            }}
-          >
-            Цифровые продукты без лишнего шума
-          </div>
-          <div style={{ fontSize: 26, color: "#148a9c", fontWeight: 600 }}>
-            Мобильные приложения, CRM, SaaS и автоматизация под ключ
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            <div
+              style={{
+                fontSize: 68,
+                fontWeight: 700,
+                lineHeight: 1.02,
+                letterSpacing: -2,
+                maxWidth: 980,
+              }}
+            >
+              Цифровые продукты без лишнего шума
+            </div>
+            <div style={{ fontSize: 26, color: "#dbeafe", fontWeight: 600 }}>
+              Мобильные приложения, CRM, SaaS и автоматизация под ключ
+            </div>
           </div>
         </div>
       </div>

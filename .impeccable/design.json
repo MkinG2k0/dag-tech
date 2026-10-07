@@ -1,0 +1,319 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-07T09:57:00+03:00",
+  "title": "Design System: DAG TECH",
+  "extensions": {
+    "colorMeta": {
+      "paper-black": {
+        "role": "neutral",
+        "displayName": "Paper Black",
+        "canonical": "#000000",
+        "tonalRamp": ["#000000", "#0a0a0a", "#171717", "#262626", "#404040", "#737373", "#a3a3a3", "#f5f5f5"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#f4f7fb",
+        "tonalRamp": ["#0c1218", "#1e293b", "#334155", "#64748b", "#94a3b8", "#c5d0dc", "#e7eef6", "#f4f7fb"]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Ink Soft",
+        "canonical": "#c5d0dc",
+        "tonalRamp": ["#101820", "#243040", "#3d4f63", "#5c738a", "#8fa3b5", "#c5d0dc", "#dde5ed", "#f4f7fb"]
+      },
+      "ink-white": {
+        "role": "neutral",
+        "displayName": "Ink White",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#404040", "#737373", "#a3a3a3", "#d4d4d4", "#e5e5e5", "#f5f5f5", "#fafafa", "#ffffff"]
+      },
+      "action-blue": {
+        "role": "primary",
+        "displayName": "Action Blue",
+        "canonical": "#1d4ed8",
+        "tonalRamp": ["#172554", "#1e3a8a", "#1e40af", "#1d4ed8", "#2563eb", "#60a5fa", "#93c5fd", "#dbeafe"]
+      },
+      "action-blue-deep": {
+        "role": "primary",
+        "displayName": "Action Blue Deep",
+        "canonical": "#1e40af",
+        "tonalRamp": ["#0f1c4d", "#172554", "#1e3a8a", "#1e40af", "#1d4ed8", "#3b82f6", "#93c5fd", "#dbeafe"]
+      },
+      "focus": {
+        "role": "primary",
+        "displayName": "Focus",
+        "canonical": "#93c5fd",
+        "tonalRamp": ["#172554", "#1e40af", "#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe", "#eff6ff"]
+      },
+      "error": {
+        "role": "neutral",
+        "displayName": "Error",
+        "canonical": "#ffb4b4",
+        "tonalRamp": ["#3f1214", "#7f1d1d", "#991b1b", "#dc2626", "#f87171", "#ffb4b4", "#fecaca", "#fff1f2"]
+      },
+      "signal": {
+        "role": "primary",
+        "displayName": "Signal",
+        "canonical": "#dbeafe",
+        "tonalRamp": ["#172554", "#1e3a8a", "#1d4ed8", "#3b82f6", "#60a5fa", "#93c5fd", "#dbeafe", "#eff6ff"]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgba(255, 255, 255, 0.16)",
+        "tonalRamp": [
+          "rgba(255, 255, 255, 0.04)",
+          "rgba(255, 255, 255, 0.08)",
+          "rgba(255, 255, 255, 0.12)",
+          "rgba(255, 255, 255, 0.16)",
+          "rgba(255, 255, 255, 0.22)",
+          "rgba(255, 255, 255, 0.35)",
+          "rgba(255, 255, 255, 0.45)",
+          "rgba(255, 255, 255, 0.7)"
+        ]
+      },
+      "field-line": {
+        "role": "neutral",
+        "displayName": "Field Line",
+        "canonical": "rgba(255, 255, 255, 0.22)",
+        "tonalRamp": [
+          "rgba(255, 255, 255, 0.06)",
+          "rgba(255, 255, 255, 0.12)",
+          "rgba(255, 255, 255, 0.16)",
+          "rgba(255, 255, 255, 0.22)",
+          "rgba(255, 255, 255, 0.35)",
+          "rgba(255, 255, 255, 0.45)",
+          "rgba(255, 255, 255, 0.6)",
+          "rgba(255, 255, 255, 0.85)"
+        ]
+      },
+      "ghost-line": {
+        "role": "neutral",
+        "displayName": "Ghost Line",
+        "canonical": "rgba(255, 255, 255, 0.45)",
+        "tonalRamp": [
+          "rgba(255, 255, 255, 0.08)",
+          "rgba(255, 255, 255, 0.16)",
+          "rgba(255, 255, 255, 0.22)",
+          "rgba(255, 255, 255, 0.35)",
+          "rgba(255, 255, 255, 0.45)",
+          "rgba(255, 255, 255, 0.6)",
+          "rgba(255, 255, 255, 0.85)",
+          "#ffffff"
+        ]
+      },
+      "surface-input": {
+        "role": "neutral",
+        "displayName": "Surface Input",
+        "canonical": "#0a0a0a",
+        "tonalRamp": ["#000000", "#050505", "#0a0a0a", "#111111", "#1a1a1a", "#262626", "#404040", "#737373"]
+      },
+      "surface-dialog": {
+        "role": "neutral",
+        "displayName": "Surface Dialog",
+        "canonical": "#050505",
+        "tonalRamp": ["#000000", "#050505", "#0a0a0a", "#111111", "#1a1a1a", "#262626", "#404040", "#737373"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero h1 only. Unbounded 600, clamp(2.15rem, 6vw, 6rem), line-height 0.96, tracking -0.04em."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section h2. Unbounded 600, clamp(2rem, 4.4vw, 4rem)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Service index h3, project titles, process steps, quiz step titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Manrope 16px/1.5, measure ~62ch. Default page copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav links and buttons. Manrope 600 / 14px. Sentence case."
+      }
+    },
+    "shadows": [
+      {
+        "name": "hero-display",
+        "value": "0 2px 16px rgba(0, 0, 0, 0.85)",
+        "purpose": "Glyph shadow on hero h1 so letters stay readable on bright shader bands."
+      },
+      {
+        "name": "hero-copy",
+        "value": "0 1px 2px #000, 0 2px 12px rgba(0, 0, 0, 0.95)",
+        "purpose": "Glyph shadow on hero lead, facts, and hero ghost button label."
+      },
+      {
+        "name": "dialog-lift",
+        "value": "0 28px 80px rgba(0, 0, 0, 0.6)",
+        "purpose": "The only lifted surface: open project dialog."
+      }
+    ],
+    "motion": [
+      {
+        "name": "shader-tick",
+        "value": "0.05 per frame",
+        "purpose": "WebGL uniform time increment for RGB rings. Still frame when prefers-reduced-motion."
+      },
+      {
+        "name": "shot-track",
+        "value": "transform 0.28s ease",
+        "purpose": "Project dialog screenshot slider. Disabled under prefers-reduced-motion."
+      },
+      {
+        "name": "scroll",
+        "value": "smooth",
+        "purpose": "html scroll-behavior. Auto when prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      { "name": "mosaic", "value": "1100px" },
+      { "name": "stack", "value": "900px" },
+      { "name": "small", "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Action Blue fill. The default CTA for brief, contact, and nav.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Рассчитать проект</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 1px solid var(--blue, #1d4ed8); border-radius: 2px; background: var(--blue, #1d4ed8); color: #fff; font-family: Manrope, Arial, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; } .ds-btn-primary:hover { background: var(--blue-deep, #1e40af); border-color: var(--blue-deep, #1e40af); } .ds-btn-primary:focus-visible { outline: 2px solid var(--focus, #93c5fd); outline-offset: 3px; } .ds-btn-primary:active { background: var(--blue-deep, #1e40af); } .ds-btn-primary:disabled { background: #1e3a8a; border-color: #1e3a8a; cursor: wait; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Transparent with a 45% white border. Secondary action off the hero.",
+      "html": "<button class=\"ds-btn-ghost\" type=\"button\">Посмотреть решения</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 1px solid rgba(255, 255, 255, 0.45); border-radius: 2px; background: transparent; color: #fff; font-family: Manrope, Arial, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; } .ds-btn-ghost:hover { background: rgba(255, 255, 255, 0.08); border-color: #fff; } .ds-btn-ghost:focus-visible { outline: 2px solid var(--focus, #93c5fd); outline-offset: 3px; } .ds-btn-ghost:active { background: rgba(255, 255, 255, 0.08); border-color: #fff; }"
+    },
+    {
+      "name": "Hero Ghost Button",
+      "kind": "button",
+      "refersTo": "button-hero-ghost",
+      "description": "Ghost on the interference field: white border at rest and hover, no fill, glyph shadow on the label.",
+      "html": "<button class=\"ds-btn-hero-ghost\" type=\"button\">Посмотреть решения</button>",
+      "css": ".ds-btn-hero-ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 1px solid #fff; border-radius: 2px; background: transparent; color: #fff; font-family: Manrope, Arial, sans-serif; font-size: 14px; font-weight: 600; text-shadow: 0 1px 2px #000; cursor: pointer; } .ds-btn-hero-ghost:hover { background: transparent; border-color: #fff; } .ds-btn-hero-ghost:focus-visible { outline: 2px solid var(--focus, #93c5fd); outline-offset: 3px; } .ds-btn-hero-ghost:active { background: transparent; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Near-black fill, 1px field line, radius 0. Used in contact and quiz.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Ваше имя\" />",
+      "css": ".ds-input { width: 100%; background: #0a0a0a; border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 0; padding: 14px; color: #fff; caret-color: #fff; font-family: Manrope, Arial, sans-serif; font-size: 15px; font-weight: 500; } .ds-input::placeholder { color: #b7c3d1; opacity: 1; } .ds-input:hover { border-color: rgba(255, 255, 255, 0.35); } .ds-input:focus, .ds-input:focus-visible { border-color: var(--focus, #93c5fd); outline: 2px solid var(--focus, #93c5fd); outline-offset: 2px; }"
+    },
+    {
+      "name": "Site Nav",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Fixed Paper Black bar, 72px, 1px bottom hairline, hollow brand dot, sentence-case links.",
+      "html": "<header class=\"ds-nav\"><a class=\"ds-brand\" href=\"#\"><span class=\"ds-brand-dot\" aria-hidden=\"true\"></span>DAG TECH</a><nav class=\"ds-nav-links\" aria-label=\"Основная навигация\"><a href=\"#\">Услуги</a><a href=\"#\">Проекты</a><a href=\"#\">Процесс</a></nav><button class=\"ds-nav-cta\" type=\"button\">Обсудить проект</button></header>",
+      "css": ".ds-nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; min-height: 72px; padding: 0 3.5vw; background: #000; border-bottom: 1px solid rgba(255, 255, 255, 0.16); color: var(--ink-soft, #c5d0dc); } .ds-brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-family: Unbounded, Manrope, Arial, sans-serif; font-weight: 600; font-size: 15px; letter-spacing: -0.04em; } .ds-brand-dot { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid #fff; background: transparent; flex-shrink: 0; } .ds-nav-links { display: flex; gap: 4px; } .ds-nav-links a { color: var(--ink-soft, #c5d0dc); text-decoration: none; font-family: Manrope, Arial, sans-serif; font-size: 14px; font-weight: 600; padding: 8px 14px; } .ds-nav-links a:hover { color: #fff; } .ds-nav-links a:focus-visible { outline: 2px solid var(--focus, #93c5fd); outline-offset: 3px; } .ds-nav-cta { justify-self: end; min-height: 40px; padding: 0 16px; border: 1px solid var(--blue, #1d4ed8); border-radius: 2px; background: var(--blue, #1d4ed8); color: #fff; font-family: Manrope, Arial, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; } .ds-nav-cta:hover { background: var(--blue-deep, #1e40af); border-color: var(--blue-deep, #1e40af); } .ds-nav-cta:focus-visible { outline: 2px solid var(--focus, #93c5fd); outline-offset: 3px; }"
+    },
+    {
+      "name": "Service Index Row",
+      "kind": "custom",
+      "refersTo": "form-panel",
+      "description": "Ruled two-column service row. Not a card: hairlines, no fill, no radius.",
+      "html": "<article class=\"ds-index-row\"><h3 class=\"ds-index-title\">Мобильные приложения</h3><p class=\"ds-index-text\">iOS и Android: клиентские сервисы, запись, программы лояльности, подписки и push.</p></article>",
+      "css": ".ds-index-row { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 28px 48px; align-items: baseline; padding: 32px 0; border-top: 1px solid rgba(255, 255, 255, 0.16); border-bottom: 1px solid rgba(255, 255, 255, 0.16); background: transparent; } .ds-index-title { margin: 0; color: #fff; font-family: Unbounded, Manrope, Arial, sans-serif; font-weight: 600; font-size: clamp(1.6rem, 2.6vw, 2.5rem); letter-spacing: -0.04em; line-height: 1.02; } .ds-index-row:hover .ds-index-title { color: #dbeafe; } .ds-index-text { margin: 0; max-width: 62ch; color: var(--ink-soft, #c5d0dc); font-family: Manrope, Arial, sans-serif; font-size: 16px; line-height: 1.6; }"
+    },
+    {
+      "name": "Project Tile",
+      "kind": "card",
+      "refersTo": "project-tile",
+      "description": "Mosaic cell: hairline rectangle, screenshot mock, Unbounded title. First cell spans two rows in the live grid.",
+      "html": "<button class=\"ds-project\" type=\"button\"><div class=\"ds-mock\"></div><div class=\"ds-project-copy\"><h3>Клиентский сервис</h3><p>Запись, статусы и уведомления в одном контуре.</p><span class=\"ds-project-more\">Смотреть</span></div></button>",
+      "css": ".ds-project { appearance: none; width: 100%; margin: 0; padding: 0; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 0; background: #000; color: inherit; text-align: left; font: inherit; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; } .ds-project:hover, .ds-project:focus-visible { border-color: rgba(255, 255, 255, 0.5); } .ds-project:focus-visible { outline: 2px solid var(--focus, #93c5fd); outline-offset: 3px; } .ds-mock { width: 100%; height: 210px; background: #111; } .ds-project-copy { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; } .ds-project-copy h3 { margin: 0; color: #fff; font-family: Unbounded, Manrope, Arial, sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.04em; line-height: 1.02; } .ds-project-copy p { margin: 0; font-family: Manrope, Arial, sans-serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft, #c5d0dc); } .ds-project-more { margin-top: 8px; color: #fff; font-family: Manrope, Arial, sans-serif; font-size: 14px; font-weight: 600; }"
+    },
+    {
+      "name": "Quiz Option",
+      "kind": "chip",
+      "refersTo": "button-primary",
+      "description": "Square selectable span. Rest is a field line; checked is Action Blue fill.",
+      "html": "<label class=\"ds-option\"><input type=\"radio\" name=\"ds-product\" checked /><span>Мобильное приложение</span></label>",
+      "css": ".ds-option { position: relative; display: block; } .ds-option input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; } .ds-option span { display: block; padding: 14px 16px; border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 0; cursor: pointer; font-family: Manrope, Arial, sans-serif; font-size: 14px; line-height: 1.4; color: #fff; background: transparent; } .ds-option input:checked + span { background: var(--blue, #1d4ed8); border-color: var(--blue, #1d4ed8); color: #fff; } .ds-option:hover span { border-color: rgba(255, 255, 255, 0.45); } .ds-option input:focus-visible + span, .ds-option:focus-within span { outline: 2px solid var(--focus, #93c5fd); outline-offset: 2px; }"
+    },
+    {
+      "name": "Form Panel",
+      "kind": "custom",
+      "refersTo": "form-panel",
+      "description": "Transparent hairline sheet for the quiz and contact forms. Progress track is 2px Action Blue on Hairline.",
+      "html": "<form class=\"ds-form-panel\"><div class=\"ds-progress\" aria-hidden=\"true\"><i></i></div><small class=\"ds-step\">1 / 7</small><h3 class=\"ds-form-title\">Что хотите разработать?</h3></form>",
+      "css": ".ds-form-panel { padding: 28px; border: 1px solid rgba(255, 255, 255, 0.16); background: transparent; border-radius: 0; } .ds-progress { height: 2px; margin-bottom: 28px; background: rgba(255, 255, 255, 0.16); overflow: hidden; } .ds-progress i { display: block; width: 14%; height: 100%; background: var(--blue, #1d4ed8); } .ds-step { color: #dbeafe; font-family: Manrope, Arial, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; } .ds-form-title { margin: 12px 0 0; color: #fff; font-family: Unbounded, Manrope, Arial, sans-serif; font-size: clamp(1.4rem, 2vw, 1.7rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1.02; }"
+    },
+    {
+      "name": "Process Step",
+      "kind": "custom",
+      "refersTo": "form-panel",
+      "description": "One cell of the four-column hairline timeline. Numeric index, not an eyebrow kicker.",
+      "html": "<div class=\"ds-process\"><b>01</b><h3>Разбираем задачу</h3><p>Цели, пользователи, функции и ограничения.</p></div>",
+      "css": ".ds-process { padding: 28px 28px 8px 0; border-top: 1px solid rgba(255, 255, 255, 0.16); border-right: 1px solid rgba(255, 255, 255, 0.16); background: transparent; } .ds-process b { display: block; margin-bottom: 48px; color: #dbeafe; font-family: Manrope, Arial, sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; } .ds-process h3 { margin: 0 0 10px; color: #fff; font-family: Unbounded, Manrope, Arial, sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.04em; line-height: 1.02; } .ds-process p { margin: 0; font-family: Manrope, Arial, sans-serif; font-size: 15px; line-height: 1.55; color: var(--ink-soft, #c5d0dc); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Interference Field",
+    "overview": "The first viewport is a live WebGL field: chromatic RGB rings generated on Paper Black. The offer sits inside that field — centered Unbounded headline, two actions, three facts — not on a panel, orb, or veil above it. After the hero, the page is a black ruled document: hairline strips, an indexed service list, a screenshot mosaic, a four-column process, then the brief and contact.\n\nVoice is dark, precise, and Russian. Type is cool ink on black. Blue is an action, not an atmosphere. Density is editorial: large tight display, body held to a readable measure, sections opened by a two-column head then a structural index or grid. Motion lives in the shader; UI state changes are instant except the project shot track.\n\nConfirmed rejections: glass orbs, gradient type, equal service cards, eyebrow kickers, Unicode glyph icons, page-sized frosted veils.",
+    "keyCharacteristics": [
+      "Live RGB interference shader full-bleed behind the first viewport; `prefers-reduced-motion` renders a still frame",
+      "Unbounded 600 for display; Manrope for body and controls",
+      "Action Blue fill on primary actions and selected interactive states; never as a wash or on type",
+      "Flat surfaces; depth from the live field plus 1px hairlines; hero type uses a glyph shadow so letters hold on bright bands",
+      "Square geometry: 2px radius on buttons, 0 elsewhere; services as a ruled index, not cards"
+    ],
+    "rules": [
+      {
+        "name": "The Action Blue Rule",
+        "body": "Action Blue is fill for primary actions and selected interactive states. It is not a page wash, a type color, a gradient, or a glow.",
+        "section": "colors"
+      },
+      {
+        "name": "The Generated Field Rule",
+        "body": "Chromatic rings are generated by the shader. They are not palette tokens and must not be sampled into swatches or CSS gradients.",
+        "section": "colors"
+      },
+      {
+        "name": "The Sentence-Case Rule",
+        "body": "Headings, nav, and buttons stay sentence case (or the product’s own Russian casing). No uppercase tracked kickers, eyebrows, or overline labels.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Field Rule",
+        "body": "Surfaces are flat at rest. Do not add ambient card shadows, glow, or backdrop-filter. The moving field and 1px rules already supply depth.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Square Control Rule",
+        "body": "Radius is 2px on buttons and 0 on every other surface.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do put the offer inside the live interference field; keep hero copy centered and unboxed.",
+      "Do use Unbounded 600 at the hero clamp with tracking −0.04em and line-height 0.96, plus the hero glyph shadow.",
+      "Do treat services as a ruled index, projects as a mosaic, process as a four-column hairline timeline.",
+      "Do paint Action Blue only as fill on primary actions and selected states.",
+      "Do keep radius at 2px on buttons and 0 on every other surface; use 1px Hairline to divide.",
+      "Do render a still shader frame when `prefers-reduced-motion` is set.",
+      "Do write UI copy in Russian, sentence case, without hype."
+    ],
+    "donts": [
+      "Don't introduce glass, orbs, blur, gradient type, or a page-sized veil over the hero.",
+      "Don't turn services into equal rounded cards.",
+      "Don't add uppercase tracked kickers, eyebrows, or Unicode glyph icons (including a hamburger).",
+      "Don't sample shader ring colors into the palette or recreate them as CSS gradients.",
+      "Don't use Action Blue as a section wash or as heading color.",
+      "Don't add ambient drop shadows to tiles, forms, or the nav.",
+      "Don't round inputs, dialogs, or project tiles."
+    ]
+  }
+}

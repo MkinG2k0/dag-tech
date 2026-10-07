@@ -79,7 +79,7 @@ export function ContactForm() {
   }
 
   return (
-    <form className="contact-form glass" onSubmit={onSubmit} noValidate>
+    <form className="contact-form" onSubmit={onSubmit} noValidate>
       <div className="grid2">
         <input
           name="name"

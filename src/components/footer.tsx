@@ -3,7 +3,7 @@ import { siteConfig } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="glass">
+    <footer>
       <Link className="brand" href="/#top">
         <span className="brand-dot" aria-hidden="true" />
         DAG TECH

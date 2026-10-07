@@ -178,7 +178,7 @@ export function QuizForm() {
   }
 
   return (
-    <form className="quiz-card glass" onSubmit={onSubmit} noValidate>
+    <form className="quiz-card" onSubmit={onSubmit} noValidate>
       <div className="progress" aria-hidden="true">
         <i style={{ width: `${progress}%` }} />
       </div>
