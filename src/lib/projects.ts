@@ -12,6 +12,7 @@ export type Project = {
   description: string;
   cover?: string;
   coverPosition?: string;
+  featured?: boolean;
   shots: ProjectShot[];
   href?: string;
   hrefLabel?: string;
@@ -22,6 +23,7 @@ export const projects: Project[] = [
     id: "diary",
     tag: "Web / SaaS",
     title: "Дневник медресе",
+    featured: true,
     summary:
       "Закрытый дневник школы: группы, посещаемость, оценки и аналитика.",
     description:
@@ -90,6 +92,7 @@ export const projects: Project[] = [
     id: "ai-food",
     tag: "Android / AI",
     title: "AI Food",
+    featured: true,
     summary: "Учёт калорий и БЖУ по фото — нейросеть считает за секунды.",
     description:
       "Сфотографировали тарелку — искусственный интеллект оценивает калории, белки, жиры и углеводы и сохраняет приём в дневник. Без ручного взвешивания и длинных справочников: быстрый учёт питания прямо с камеры телефона.",
@@ -124,7 +127,8 @@ export const projects: Project[] = [
     id: "ai-fit",
     tag: "Android / Fitness",
     title: "Подход",
-    summary: "Силовой дневник: вес, повторы, прогресс. Данные на устройстве.",
+    featured: true,
+    summary: "Силовой дневник: вес, повторы, прогресс.",
     description:
       "Дневник силовых тренировок без облака и аккаунта. Подходы, вес, повторы, графики прогресса и таймер отдыха. История упражнений остаётся на телефоне — можно тренироваться офлайн и не раздавать данные сервисам.",
     cover: "/projects/ai-fit.webp",
@@ -229,7 +233,22 @@ export const projects: Project[] = [
     shots: [
       {
         src: "/projects/develop-1.webp",
-        alt: "Обложка лендинга студии Develop",
+        alt: "Главный экран лендинга Develop",
+        kind: "desktop",
+      },
+      {
+        src: "/projects/develop-2.webp",
+        alt: "Форматы: лендинг, бизнес-сайт и веб-приложение",
+        kind: "desktop",
+      },
+      {
+        src: "/projects/develop-3.webp",
+        alt: "Пакеты и цены Develop",
+        kind: "desktop",
+      },
+      {
+        src: "/projects/develop-4.webp",
+        alt: "Пять шагов от идеи до запуска",
         kind: "desktop",
       },
     ],

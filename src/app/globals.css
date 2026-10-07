@@ -300,6 +300,11 @@ html:has(dialog[open]) .nav {
   margin-bottom: 40px;
 }
 
+#process .section-head {
+  display: block;
+  margin-bottom: 28px;
+}
+
 .section h2 {
   font-size: clamp(2rem, 4.4vw, 4rem);
 }
@@ -350,8 +355,16 @@ html:has(dialog[open]) .nav {
   align-items: stretch;
 }
 
+@property --project-border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .project {
+  --project-border-angle: 0deg;
   appearance: none;
+  position: relative;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -362,18 +375,84 @@ html:has(dialog[open]) .nav {
   text-align: left;
   font: inherit;
   cursor: pointer;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
+  transition: border-color 0.2s ease;
 }
 
-.project:first-child {
+.project.is-featured {
   grid-row: span 2;
+}
+
+.project::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: 2;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--project-border-angle),
+    rgba(255, 255, 255, 0.12) 0deg,
+    rgba(255, 90, 90, 0.4) 60deg,
+    rgba(90, 255, 170, 0.5) 120deg,
+    rgba(120, 190, 255, 0.65) 180deg,
+    rgba(255, 255, 255, 0.16) 240deg,
+    rgba(255, 255, 255, 0.7) 300deg,
+    rgba(120, 190, 255, 0.75) 330deg,
+    rgba(255, 255, 255, 0.12) 360deg
+  );
+  opacity: 0;
+  transition: opacity 5s ease;
+  animation: project-border-spin 4.5s linear infinite;
+  animation-play-state: paused;
+}
+
+.project::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: #000;
+  opacity: 0;
+  transition: opacity 5s ease;
+}
+
+.project:hover::before,
+.project:focus-visible::before {
+  opacity: 1;
+  animation-play-state: running;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project:hover::after,
+.project:focus-visible::after {
+  opacity: 1;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .project:hover,
 .project:focus-visible {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: transparent;
+  transition: border-color 0.55s ease;
+}
+
+.project > * {
+  position: relative;
+  z-index: 3;
+}
+
+.project:hover .project-more,
+.project:focus-visible .project-more {
+  color: #dbeafe;
+  transition: color 0.45s ease;
+}
+
+@keyframes project-border-spin {
+  to {
+    --project-border-angle: 360deg;
+  }
 }
 
 .mock {
@@ -384,10 +463,10 @@ html:has(dialog[open]) .nav {
   height: 210px;
 }
 
-.project:first-child .mock {
+.project.is-featured .mock {
   flex: 1;
   height: auto;
-  min-height: 280px;
+  min-height: 580px;
 }
 
 .mock-fallback {
@@ -643,8 +722,12 @@ html:has(dialog[open]) .nav {
 }
 
 .timeline div {
-  padding: 28px 28px 8px 0;
+  padding: 24px 24px 4px;
   border-right: 1px solid var(--line);
+}
+
+.timeline div:first-child {
+  padding-left: 0;
 }
 
 .timeline div:last-child {
@@ -654,7 +737,7 @@ html:has(dialog[open]) .nav {
 
 .timeline b {
   display: block;
-  margin-bottom: 48px;
+  margin-bottom: 16px;
   color: #dbeafe;
   font: 600 13px var(--font-manrope), Arial, sans-serif;
   letter-spacing: 0.14em;
@@ -674,8 +757,7 @@ html:has(dialog[open]) .nav {
 }
 
 .quiz-intro {
-  position: sticky;
-  top: calc(var(--nav-h) + 28px);
+  position: static;
 }
 
 .quiz-intro h2,
@@ -987,6 +1069,16 @@ footer {
     grid-column: 1 / -1;
   }
 
+  .project.is-featured {
+    grid-row: auto;
+  }
+
+  .project.is-featured .mock {
+    flex: none;
+    height: 210px;
+    min-height: 0;
+  }
+
   .project:first-child .mock {
     height: 280px;
     flex: none;
@@ -1092,10 +1184,6 @@ footer {
     margin-bottom: 16px;
   }
 
-  .quiz-intro {
-    position: static;
-  }
-
   .section-head {
     gap: 16px;
   }
@@ -1139,7 +1227,8 @@ footer {
   }
 
   .mock,
-  .project:first-child .mock {
+  .project:first-child .mock,
+  .project.is-featured .mock {
     height: 200px;
     min-height: 0;
   }
@@ -1181,5 +1270,27 @@ footer {
     transition: none;
     filter: none;
     transform: none;
+  }
+
+  .project:hover::before,
+  .project:focus-visible::before {
+    animation: none;
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  .project:hover::after,
+  .project:focus-visible::after {
+    opacity: 1;
+  }
+
+  .project:hover,
+  .project:focus-visible {
+    border-color: transparent;
+  }
+
+  .project:hover .project-more,
+  .project:focus-visible .project-more {
+    color: #fff;
   }
 }

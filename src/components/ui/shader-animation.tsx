@@ -46,7 +46,7 @@ export function ShaderAnimation({ className }: { className?: string }) {
         vec3 color = vec3(0.0);
         for(int j = 0; j < 3; j++){
           for(int i=0; i < 5; i++){
-            color[j] += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));
+            color[j] += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*3.0 - length(uv) + mod(uv.x+uv.y, 0.2));
           }
         }
 
@@ -61,7 +61,7 @@ export function ShaderAnimation({ className }: { className?: string }) {
     const geometry = new THREE.PlaneGeometry(2, 2)
 
     const uniforms: ShaderUniforms = {
-      time: { value: 1.0 },
+      time: { value: 48 },
       resolution: { value: new THREE.Vector2() },
     }
 
@@ -76,14 +76,18 @@ export function ShaderAnimation({ className }: { className?: string }) {
 
     let renderer: THREE.WebGLRenderer
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false })
+      renderer = new THREE.WebGLRenderer({
+        antialias: false,
+        alpha: false,
+        powerPreference: "high-performance",
+      })
     } catch {
       geometry.dispose()
       material.dispose()
       return
     }
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75))
     renderer.setClearColor(0x000000, 1)
     renderer.domElement.style.display = "block"
     container.appendChild(renderer.domElement)
@@ -92,13 +96,15 @@ export function ShaderAnimation({ className }: { className?: string }) {
       const width = container.clientWidth
       const height = container.clientHeight
       if (width === 0 || height === 0) return
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75))
       renderer.setSize(width, height)
       uniforms.resolution.value.x = renderer.domElement.width
       uniforms.resolution.value.y = renderer.domElement.height
     }
 
     onResize()
+    renderer.render(scene, camera)
+
     window.addEventListener("resize", onResize, false)
     const resizeObserver = new ResizeObserver(onResize)
     resizeObserver.observe(container)
@@ -109,7 +115,7 @@ export function ShaderAnimation({ className }: { className?: string }) {
       if (!sceneRef.current) return
       sceneRef.current.animationId = requestAnimationFrame(animate)
       if (document.hidden) return
-      uniforms.time.value += 0.05
+      uniforms.time.value += 0.018
       renderer.render(scene, camera)
     }
 
