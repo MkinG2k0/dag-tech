@@ -241,6 +241,7 @@ html:has(dialog[open]) .nav {
 }
 
 .brand-dot {
+  position: relative;
   width: 14px;
   height: 14px;
   border-radius: 50%;
@@ -250,12 +251,29 @@ html:has(dialog[open]) .nav {
   box-shadow: 0 0 12px rgba(46, 196, 214, 0.55);
 }
 
+.brand-dot::before,
+.brand-dot::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid rgba(46, 196, 214, 0.45);
+  opacity: 0;
+  animation: brand-ring 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.brand-dot::after {
+  animation-delay: 1.8s;
+  border-color: rgba(226, 184, 106, 0.4);
+}
+
 .nav nav {
   display: flex;
   gap: 4px;
 }
 
 .nav nav a {
+  position: relative;
   color: var(--ink);
   text-decoration: none;
   font-size: 13px;
@@ -263,11 +281,28 @@ html:has(dialog[open]) .nav {
   letter-spacing: 0.01em;
   padding: 8px 14px;
   border-radius: var(--radius-pill);
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, color 0.25s ease;
+}
+
+.nav nav a::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 6px;
+  height: 1px;
+  background: var(--aqua-deep);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav nav a:hover {
   background: rgba(255, 255, 255, 0.45);
+}
+
+.nav nav a:hover::after {
+  transform: scaleX(1);
 }
 
 .nav > .btn {
@@ -291,6 +326,8 @@ html:has(dialog[open]) .nav {
 }
 
 .btn {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -308,11 +345,34 @@ html:has(dialog[open]) .nav {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.28),
+    transparent
+  );
+  transform: skewX(-18deg) translateX(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
 .btn:hover {
   transform: translateY(-1px);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
     0 14px 28px rgba(16, 38, 50, 0.26);
+}
+
+.btn:hover::after {
+  opacity: 1;
+  animation: btn-shine 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn:disabled {
@@ -682,10 +742,35 @@ html:has(dialog[open]) .nav {
 }
 
 .strip {
+  overflow: hidden;
+  padding: 8px 0;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+}
+
+.strip-track {
   display: flex;
+  width: max-content;
+  animation: strip-scroll 36s linear infinite;
+}
+
+.strip-group {
+  display: flex;
+  flex-shrink: 0;
   gap: 10px;
-  padding: 8px 3.5vw 8px;
-  overflow: auto;
+  padding: 0 3.5vw;
 }
 
 .strip span {
@@ -699,6 +784,10 @@ html:has(dialog[open]) .nav {
   border: 1px solid var(--glass-edge);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+.strip:hover .strip-track {
+  animation-play-state: paused;
 }
 
 .section {
@@ -740,8 +829,31 @@ html:has(dialog[open]) .nav {
   transition: transform 0.3s ease;
 }
 
+.cards article::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(46, 196, 214, 0.85),
+    transparent
+  );
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .cards article:hover {
   transform: translateY(-4px);
+}
+
+.cards article:hover::before {
+  transform: scaleY(1);
 }
 
 .cards article:nth-child(2) {
@@ -803,9 +915,17 @@ html:has(dialog[open]) .nav {
   align-items: stretch;
 }
 
+@property --project-border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .project {
+  --project-border-angle: 0deg;
   appearance: none;
   -webkit-appearance: none;
+  position: relative;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -820,6 +940,35 @@ html:has(dialog[open]) .nav {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+.project::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  padding: 1.5px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--project-border-angle),
+    transparent 0deg,
+    rgba(46, 196, 214, 0.12) 40deg,
+    rgba(226, 184, 106, 0.55) 95deg,
+    rgba(46, 196, 214, 0.7) 160deg,
+    transparent 230deg,
+    rgba(201, 212, 240, 0.55) 290deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: project-border-spin 4.5s linear infinite;
+  animation-play-state: paused;
+}
+
 .project:hover,
 .project:focus-visible {
   outline: none;
@@ -829,12 +978,27 @@ html:has(dialog[open]) .nav {
     0 22px 48px rgba(16, 38, 50, 0.16);
 }
 
+.project:hover::before,
+.project:focus-visible::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
 .mock {
   position: relative;
   overflow: hidden;
   background: rgba(16, 38, 50, 0.08);
   width: 100%;
   height: 210px;
+}
+
+.mock img {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project:hover .mock img,
+.project:focus-visible .mock img {
+  transform: scale(1.045);
 }
 
 .mock-fallback {
@@ -1065,6 +1229,16 @@ html:has(dialog[open]) .nav {
   padding: 24px;
   min-height: 210px;
   border-radius: var(--radius);
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s ease;
+}
+
+.timeline div:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 18px 40px rgba(16, 38, 50, 0.12);
 }
 
 .timeline b {
@@ -1073,11 +1247,21 @@ html:has(dialog[open]) .nav {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  transition: letter-spacing 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.timeline div:hover b {
+  letter-spacing: 0.04em;
 }
 
 .timeline h3 {
   font: 600 18px var(--font-display), var(--font-manrope), Arial, sans-serif;
   margin-top: 42px;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.timeline div:hover h3 {
+  transform: translateX(4px);
 }
 
 .quiz-section {
@@ -1606,8 +1790,12 @@ footer {
   }
 
   .strip {
-    padding-left: 18px;
-    padding-right: 18px;
+    padding: 8px 0;
+  }
+
+  .strip-group {
+    gap: 8px;
+    padding: 0 18px;
   }
 
   .hero-actions {
@@ -1635,6 +1823,45 @@ footer {
   }
 }
 
+@keyframes brand-ring {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.7);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(2.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.1);
+  }
+}
+
+@keyframes strip-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes btn-shine {
+  from {
+    transform: skewX(-18deg) translateX(0);
+  }
+  to {
+    transform: skewX(-18deg) translateX(320%);
+  }
+}
+
+@keyframes project-border-spin {
+  to {
+    --project-border-angle: 360deg;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero,
   .hero a,
@@ -1653,13 +1880,36 @@ footer {
   .hero-lens,
   .orb,
   .sheen,
-  .window::before {
+  .window::before,
+  .brand-dot::before,
+  .brand-dot::after,
+  .strip-track,
+  .btn:hover::after,
+  .project:hover::before,
+  .project:focus-visible::before {
     animation: none;
+  }
+
+  .strip-track {
+    transform: none;
+  }
+
+  .mock img,
+  .timeline h3,
+  .timeline b,
+  .timeline div,
+  .nav nav a::after,
+  .cards article::before {
+    transition: none !important;
   }
 
   .project:hover,
   .project:focus-visible,
+  .project:hover .mock img,
+  .project:focus-visible .mock img,
   .cards article:hover,
+  .timeline div:hover,
+  .timeline div:hover h3,
   .btn:hover {
     transform: none;
   }

@@ -133,12 +133,22 @@ export default function Home() {
         </section>
 
         <section className="strip" aria-label="Направления разработки">
-          <span>Mobile</span>
-          <span>CRM / ERP</span>
-          <span>SaaS</span>
-          <span>Telegram Mini Apps</span>
-          <span>E-commerce</span>
-          <span>Automation</span>
+          <div className="strip-track">
+            {[0, 1].map((copy) => (
+              <div
+                className="strip-group"
+                key={copy}
+                aria-hidden={copy === 1 ? true : undefined}
+              >
+                <span>Mobile</span>
+                <span>CRM / ERP</span>
+                <span>SaaS</span>
+                <span>Telegram Mini Apps</span>
+                <span>E-commerce</span>
+                <span>Automation</span>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section id="services" className="section">
