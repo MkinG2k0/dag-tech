@@ -50,9 +50,10 @@ export function Header() {
           <a href={siteConfig.email.href} onClick={close}>
             {siteConfig.email.display}
           </a>
-          <span>
-            {siteConfig.geo.display}. {siteConfig.geo.served}
-          </span>
+          <p className="nav-geo">
+            <span className="nav-geo-city">{siteConfig.geo.display}</span>
+            <span className="nav-geo-served">{siteConfig.geo.served}</span>
+          </p>
           <Link href={siteConfig.privacyPath} onClick={close}>
             Политика ПДн
           </Link>

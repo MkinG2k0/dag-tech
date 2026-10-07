@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Unbounded } from "next/font/google";
 import { JsonLd } from "@/components/json-ld";
+import { MotionRoot } from "@/components/motion-root";
+import { SiteLoader } from "@/components/site-loader";
 import { getSiteUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -72,7 +74,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#e7f3f6",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#e7f3f6" },
+    { media: "(prefers-color-scheme: dark)", color: "#102632" },
+  ],
   width: "device-width",
   initialScale: 1,
 };
@@ -81,6 +86,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ru" className={`${manrope.variable} ${unbounded.variable}`}>
       <body>
+        <SiteLoader />
+        <MotionRoot />
         <div className="atmosphere" aria-hidden="true">
           <span className="orb orb-cyan" />
           <span className="orb orb-gold" />

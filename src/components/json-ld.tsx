@@ -13,6 +13,8 @@ export function JsonLd() {
         legalName: siteConfig.legalName,
         url,
         description: siteConfig.description,
+        logo: `${url}/icons/icon-512.png`,
+        image: `${url}/icons/icon-512.png`,
         telephone: siteConfig.phone.e164,
         email: siteConfig.email.display,
         inLanguage: "ru",

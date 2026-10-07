@@ -4,29 +4,75 @@ import Image from "next/image";
 import { useEffect, useRef, useState, type PointerEvent } from "react";
 import type { Project, ProjectShot } from "@/lib/projects";
 
+const DIALOG_MS = 420;
+
 export function Projects({ projects }: { projects: Project[] }) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const closingRef = useRef(false);
   const active = projects.find((project) => project.id === activeId) ?? null;
+
+  function finishClose() {
+    const dialog = dialogRef.current;
+    closingRef.current = false;
+    dialog?.classList.remove("is-visible");
+    if (dialog?.open) dialog.close();
+    setActiveId(null);
+    document.documentElement.classList.remove("has-dialog");
+    document.body.style.overflow = "";
+  }
+
+  function closeDialog() {
+    const dialog = dialogRef.current;
+    if (!dialog?.open || closingRef.current) {
+      finishClose();
+      return;
+    }
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Reveal header while modal fades out — avoids a hard pop at the end.
+    document.documentElement.classList.remove("has-dialog");
+
+    if (reduced) {
+      finishClose();
+      return;
+    }
+
+    closingRef.current = true;
+    dialog.classList.remove("is-visible");
+
+    window.setTimeout(() => {
+      if (closingRef.current) finishClose();
+    }, DIALOG_MS);
+  }
 
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (!dialog) return;
+    if (!dialog || !active) return;
 
-    if (active) {
-      if (!dialog.open) dialog.showModal();
-      document.body.style.overflow = "hidden";
+    closingRef.current = false;
+    dialog.classList.remove("is-visible");
+    if (!dialog.open) dialog.showModal();
+    document.documentElement.classList.add("has-dialog");
+    document.body.style.overflow = "hidden";
+
+    // Force a closed-frame paint, then animate in.
+    void dialog.offsetWidth;
+    const timer = window.setTimeout(() => {
+      dialog.classList.add("is-visible");
       closeRef.current?.focus();
-    } else if (dialog.open) {
-      dialog.close();
-      document.body.style.overflow = "";
-    }
+    }, 16);
 
+    return () => window.clearTimeout(timer);
+  }, [active]);
+
+  useEffect(() => {
     return () => {
+      document.documentElement.classList.remove("has-dialog");
       document.body.style.overflow = "";
     };
-  }, [active]);
+  }, []);
 
   return (
     <>
@@ -70,9 +116,19 @@ export function Projects({ projects }: { projects: Project[] }) {
         ref={dialogRef}
         className="project-dialog"
         aria-labelledby={active ? `project-title-${active.id}` : undefined}
-        onClose={() => setActiveId(null)}
+        onCancel={(event) => {
+          event.preventDefault();
+          closeDialog();
+        }}
+        onClose={() => {
+          if (!closingRef.current) {
+            setActiveId(null);
+            document.documentElement.classList.remove("has-dialog");
+            document.body.style.overflow = "";
+          }
+        }}
         onClick={(event) => {
-          if (event.target === event.currentTarget) setActiveId(null);
+          if (event.target === event.currentTarget) closeDialog();
         }}
       >
         {active ? (
@@ -83,7 +139,7 @@ export function Projects({ projects }: { projects: Project[] }) {
                 ref={closeRef}
                 type="button"
                 className="project-dialog-close"
-                onClick={() => setActiveId(null)}
+                onClick={closeDialog}
               >
                 Закрыть
               </button>

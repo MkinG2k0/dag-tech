@@ -1,30 +1,37 @@
 import { ContactForm } from "@/components/contact-form";
-import { HeroLens } from "@/components/hero-lens";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { Projects } from "@/components/projects";
 import { QuizForm } from "@/components/quiz-form";
+import {
+  ServiceIcon,
+  type ServiceIconName,
+} from "@/components/service-icon";
 import { projects } from "@/lib/projects";
 import { siteConfig } from "@/lib/site";
 
-const services = [
+const services: {
+  icon: ServiceIconName;
+  title: string;
+  text: string;
+}[] = [
   {
-    icon: "↗",
+    icon: "phone",
     title: "Мобильные приложения",
     text: "iOS и Android: клиентские сервисы, запись, программы лояльности, подписки и push.",
   },
   {
-    icon: "⌘",
+    icon: "crm",
     title: "CRM и внутренние системы",
     text: "Продажи, сотрудники, статусы, документы, отчёты и автоматизация ручных процессов.",
   },
   {
-    icon: "◫",
+    icon: "saas",
     title: "Личные кабинеты и SaaS",
     text: "Роли, тарифы, биллинг, панели управления, интеграции и масштабируемая архитектура.",
   },
   {
-    icon: "⚡",
+    icon: "auto",
     title: "Интеграции и автоматизация",
     text: "Оплаты, уведомления, API, карты, внешние сервисы и бизнес-процессы.",
   },
@@ -62,18 +69,19 @@ export default function Home() {
       <Header />
       <main id="top">
         <section className="hero" id="main">
-          <HeroLens />
           <div className="hero-copy">
-            <p className="eyebrow">Разработка ПО для бизнеса</p>
-            <h1>
+            <p className="eyebrow" data-reveal data-i="0">
+              Разработка ПО для бизнеса
+            </p>
+            <h1 data-reveal data-i="1">
               Цифровые продукты <span>без&nbsp;лишнего шума</span>
             </h1>
-            <p>
+            <p data-reveal data-i="2">
               DAG TECH проектирует и запускает софт, который решает конкретную
               задачу бизнеса. От первого экрана до backend, интеграций и
               публикации.
             </p>
-            <div className="hero-actions">
+            <div className="hero-actions" data-reveal data-i="3">
               <a className="btn" href="#quiz">
                 Рассчитать проект
               </a>
@@ -81,7 +89,7 @@ export default function Home() {
                 Посмотреть решения
               </a>
             </div>
-            <div className="stats glass">
+            <div className="stats glass" data-reveal data-i="4">
               <div>
                 <b>от 200 000 ₽</b>
                 <span>старт проекта</span>
@@ -96,7 +104,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="hero-panel" aria-hidden="true">
+          <div className="hero-panel" aria-hidden="true" data-reveal data-i="5">
             <div className="window">
               <div className="window-top">
                 <i />
@@ -132,7 +140,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="strip" aria-label="Направления разработки">
+        <section className="strip" aria-label="Направления разработки" data-reveal>
           <div className="strip-track">
             {[0, 1].map((copy) => (
               <div
@@ -152,7 +160,7 @@ export default function Home() {
         </section>
 
         <section id="services" className="section">
-          <div className="section-head">
+          <div className="section-head" data-reveal>
             <div>
               <p className="eyebrow">Что мы делаем</p>
               <h2>Собираем продукт целиком</h2>
@@ -163,10 +171,15 @@ export default function Home() {
             </p>
           </div>
           <div className="cards">
-            {services.map((service) => (
-              <article className="glass" key={service.title}>
+            {services.map((service, index) => (
+              <article
+                className="glass"
+                key={service.title}
+                data-reveal
+                data-i={String(index)}
+              >
                 <div className="icon" aria-hidden="true">
-                  {service.icon}
+                  <ServiceIcon name={service.icon} />
                 </div>
                 <h3>{service.title}</h3>
                 <p>{service.text}</p>
@@ -176,7 +189,7 @@ export default function Home() {
         </section>
 
         <section id="solutions" className="section solutions">
-          <div className="section-head">
+          <div className="section-head" data-reveal>
             <div>
               <p className="eyebrow">Наши решения</p>
               <h2>То, что уже работает</h2>
@@ -186,19 +199,26 @@ export default function Home() {
               внутри описание, скриншоты и ссылка на продукт.
             </p>
           </div>
-          <Projects projects={projects} />
+          <div data-reveal data-i="1">
+            <Projects projects={projects} />
+          </div>
         </section>
 
         <section id="process" className="section">
-          <div className="section-head">
+          <div className="section-head" data-reveal>
             <div>
               <p className="eyebrow">Процесс</p>
               <h2>Без квеста из подрядчиков</h2>
             </div>
           </div>
           <div className="timeline">
-            {process.map((item) => (
-              <div className="glass" key={item.n}>
+            {process.map((item, index) => (
+              <div
+                className="glass"
+                key={item.n}
+                data-reveal
+                data-i={String(index)}
+              >
                 <b>{item.n}</b>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -208,7 +228,7 @@ export default function Home() {
         </section>
 
         <section id="quiz" className="section quiz-section">
-          <div className="quiz-intro">
+          <div className="quiz-intro" data-reveal data-i="0">
             <p className="eyebrow">Бриф за 2 минуты</p>
             <h2>Расскажите о проекте</h2>
             <p>
@@ -220,11 +240,13 @@ export default function Home() {
               <span>получим бриф и ответим в течение дня.</span>
             </div>
           </div>
-          <QuizForm />
+          <div data-reveal data-i="1">
+            <QuizForm />
+          </div>
         </section>
 
         <section id="contact" className="section contact">
-          <div>
+          <div data-reveal data-i="0">
             <p className="eyebrow">Есть задача?</p>
             <h2>Обсудим проект</h2>
             <p>
@@ -253,10 +275,14 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <ContactForm />
+          <div data-reveal data-i="1">
+            <ContactForm />
+          </div>
         </section>
       </main>
-      <Footer />
+      <div data-reveal>
+        <Footer />
+      </div>
     </>
   );
 }

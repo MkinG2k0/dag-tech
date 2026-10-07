@@ -229,7 +229,22 @@ export const projects: Project[] = [
     shots: [
       {
         src: "/projects/develop-1.webp",
-        alt: "Обложка лендинга студии Develop",
+        alt: "Главный экран лендинга Develop",
+        kind: "desktop",
+      },
+      {
+        src: "/projects/develop-2.webp",
+        alt: "Форматы: лендинг, бизнес-сайт и веб-приложение",
+        kind: "desktop",
+      },
+      {
+        src: "/projects/develop-3.webp",
+        alt: "Пакеты и цены Develop",
+        kind: "desktop",
+      },
+      {
+        src: "/projects/develop-4.webp",
+        alt: "Пять шагов от идеи до запуска",
         kind: "desktop",
       },
     ],
