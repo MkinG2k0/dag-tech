@@ -1,26 +1,72 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type PointerEvent } from "react";
-import type { Project, ProjectShot } from "@/lib/projects";
+import { useEffect, useRef, useState } from "react";
+import { ProjectBody } from "@/components/project-body";
+import {
+  getProjectById,
+  getProjectSeo,
+  projectPath,
+  type Project,
+} from "@/lib/projects";
+import { siteConfig } from "@/lib/site";
 
 const DIALOG_MS = 420;
+const HOME_RETURN = "/#solutions";
+
+function projectIdFromPath(pathname: string) {
+  const match = pathname.match(/^\/projects\/([^/]+)\/?$/);
+  return match?.[1] ?? null;
+}
 
 export function Projects({ projects }: { projects: Project[] }) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const closingRef = useRef(false);
+  const syncingUrlRef = useRef(false);
+  const defaultTitleRef = useRef<string | null>(null);
   const active = projects.find((project) => project.id === activeId) ?? null;
 
-  function finishClose() {
+  function setDocumentTitle(project: Project | null) {
+    if (defaultTitleRef.current === null) {
+      defaultTitleRef.current = document.title;
+    }
+    if (!project) {
+      document.title = defaultTitleRef.current;
+      return;
+    }
+    const seo = getProjectSeo(project);
+    document.title = `${seo.title} — ${siteConfig.name}`;
+  }
+
+  function pushProjectUrl(id: string) {
+    const next = projectPath(id);
+    if (window.location.pathname === next) return;
+    syncingUrlRef.current = true;
+    window.history.pushState({ projectModal: id }, "", next);
+    syncingUrlRef.current = false;
+  }
+
+  function restoreHomeUrl() {
+    if (!projectIdFromPath(window.location.pathname)) return;
+    syncingUrlRef.current = true;
+    window.history.pushState({ projectModal: null }, "", HOME_RETURN);
+    syncingUrlRef.current = false;
+  }
+
+  function finishClose({ skipUrl = false } = {}) {
     const dialog = dialogRef.current;
-    closingRef.current = false;
+    // Keep closingRef true while calling dialog.close() so onClose skips cleanup.
+    closingRef.current = true;
     dialog?.classList.remove("is-visible");
     if (dialog?.open) dialog.close();
+    closingRef.current = false;
     setActiveId(null);
+    setDocumentTitle(null);
     document.documentElement.classList.remove("has-dialog");
     document.body.style.overflow = "";
+    if (!skipUrl) restoreHomeUrl();
   }
 
   function closeDialog() {
@@ -47,6 +93,12 @@ export function Projects({ projects }: { projects: Project[] }) {
     }, DIALOG_MS);
   }
 
+  function openProject(id: string) {
+    if (!getProjectById(id)) return;
+    setActiveId(id);
+    pushProjectUrl(id);
+  }
+
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog || !active) return;
@@ -56,6 +108,7 @@ export function Projects({ projects }: { projects: Project[] }) {
     if (!dialog.open) dialog.showModal();
     document.documentElement.classList.add("has-dialog");
     document.body.style.overflow = "hidden";
+    setDocumentTitle(active);
 
     // Force a closed-frame paint, then animate in.
     void dialog.offsetWidth;
@@ -68,6 +121,31 @@ export function Projects({ projects }: { projects: Project[] }) {
   }, [active]);
 
   useEffect(() => {
+    function onPopState() {
+      if (syncingUrlRef.current) return;
+      const id = projectIdFromPath(window.location.pathname);
+      const project = id ? projects.find((item) => item.id === id) : null;
+      if (project) {
+        setActiveId(project.id);
+        setDocumentTitle(project);
+        return;
+      }
+
+      const dialog = dialogRef.current;
+      closingRef.current = false;
+      dialog?.classList.remove("is-visible");
+      if (dialog?.open) dialog.close();
+      setActiveId(null);
+      setDocumentTitle(null);
+      document.documentElement.classList.remove("has-dialog");
+      document.body.style.overflow = "";
+    }
+
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [projects]);
+
+  useEffect(() => {
     return () => {
       document.documentElement.classList.remove("has-dialog");
       document.body.style.overflow = "";
@@ -78,13 +156,26 @@ export function Projects({ projects }: { projects: Project[] }) {
     <>
       <div className="projects">
         {projects.map((project) => (
-          <button
-            type="button"
+          <a
             className="project glass"
             key={project.id}
-            onClick={() => setActiveId(project.id)}
+            href={projectPath(project.id)}
             aria-haspopup="dialog"
             aria-expanded={activeId === project.id}
+            onClick={(event) => {
+              if (
+                event.defaultPrevented ||
+                event.button !== 0 ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey
+              ) {
+                return;
+              }
+              event.preventDefault();
+              openProject(project.id);
+            }}
           >
             <div className="mock">
               {project.cover ? (
@@ -108,7 +199,7 @@ export function Projects({ projects }: { projects: Project[] }) {
               <p>{project.summary}</p>
               <span className="project-more">Смотреть →</span>
             </div>
-          </button>
+          </a>
         ))}
       </div>
 
@@ -123,8 +214,10 @@ export function Projects({ projects }: { projects: Project[] }) {
         onClose={() => {
           if (!closingRef.current) {
             setActiveId(null);
+            setDocumentTitle(null);
             document.documentElement.classList.remove("has-dialog");
             document.body.style.overflow = "";
+            restoreHomeUrl();
           }
         }}
         onClick={(event) => {
@@ -144,137 +237,14 @@ export function Projects({ projects }: { projects: Project[] }) {
                 Закрыть
               </button>
             </div>
-            <h3 id={`project-title-${active.id}`}>{active.title}</h3>
-            <p>{active.description}</p>
-            {active.shots.length > 0 ? (
-              <ShotSlider key={active.id} shots={active.shots} title={active.title} />
-            ) : null}
-            {active.href ? (
-              <a
-                className="project-cta"
-                href={active.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {active.hrefLabel}
-              </a>
-            ) : null}
+            <ProjectBody
+              project={active}
+              headingId={`project-title-${active.id}`}
+              headingLevel="h3"
+            />
           </div>
         ) : null}
       </dialog>
     </>
-  );
-}
-
-function ShotSlider({ shots, title }: { shots: ProjectShot[]; title: string }) {
-  const [index, setIndex] = useState(0);
-  const startX = useRef<number | null>(null);
-  const kind = shots[index]?.kind ?? "desktop";
-  const canSlide = shots.length > 1;
-
-  function go(delta: number) {
-    setIndex((current) => (current + delta + shots.length) % shots.length);
-  }
-
-  useEffect(() => {
-    if (!canSlide) return;
-
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "ArrowRight") {
-        event.preventDefault();
-        go(1);
-      }
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        go(-1);
-      }
-    }
-
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [canSlide, shots.length]);
-
-  function onPointerDown(event: PointerEvent<HTMLDivElement>) {
-    startX.current = event.clientX;
-  }
-
-  function onPointerUp(event: PointerEvent<HTMLDivElement>) {
-    if (startX.current === null || !canSlide) return;
-    const delta = event.clientX - startX.current;
-    startX.current = null;
-    if (delta > 40) go(-1);
-    if (delta < -40) go(1);
-  }
-
-  return (
-    <div className={`shot-slider ${kind}`}>
-      <div className="shot-stage">
-        {canSlide ? (
-          <button
-            type="button"
-            className="shot-nav prev"
-            onClick={() => go(-1)}
-            aria-label="Предыдущий скриншот"
-          >
-            ←
-          </button>
-        ) : null}
-        <div
-          className={`shot-viewport ${kind}`}
-          onPointerDown={onPointerDown}
-          onPointerUp={onPointerUp}
-        >
-          <div
-            className="shot-track"
-            style={{ transform: `translateX(-${index * 100}%)` }}
-          >
-            {shots.map((shot) => (
-              <figure className="shot-slide" key={shot.src}>
-                <Image
-                  src={shot.src}
-                  alt={shot.alt}
-                  fill
-                  sizes={
-                    shot.kind === "phone"
-                      ? "(max-width: 700px) 70vw, 260px"
-                      : "(max-width: 700px) 90vw, 820px"
-                  }
-                  style={{ objectFit: "cover", objectPosition: "center top" }}
-                />
-              </figure>
-            ))}
-          </div>
-        </div>
-        {canSlide ? (
-          <button
-            type="button"
-            className="shot-nav next"
-            onClick={() => go(1)}
-            aria-label="Следующий скриншот"
-          >
-            →
-          </button>
-        ) : null}
-      </div>
-      {canSlide ? (
-        <div className="shot-meta">
-          <div className="shot-dots" role="tablist" aria-label={`Скриншоты ${title}`}>
-            {shots.map((shot, i) => (
-              <button
-                type="button"
-                key={shot.src}
-                className={i === index ? "is-active" : ""}
-                aria-label={`Скриншот ${i + 1}`}
-                aria-current={i === index ? "true" : undefined}
-                onClick={() => setIndex(i)}
-              />
-            ))}
-          </div>
-          <span className="shot-count">
-            {index + 1} / {shots.length}
-          </span>
-        </div>
-      ) : null}
-    </div>
   );
 }

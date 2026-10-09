@@ -1,3 +1,4 @@
+import { projects, projectPath } from "@/lib/projects";
 import { getSiteUrl, siteConfig } from "@/lib/site";
 
 export function JsonLd() {
@@ -92,6 +93,19 @@ export function JsonLd() {
         inLanguage: "ru",
         isPartOf: { "@id": `${url}/#website` },
         about: { "@id": `${url}/#organization` },
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${url}/#projects`,
+        name: "Наши решения",
+        numberOfItems: projects.length,
+        itemListElement: projects.map((project, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: project.title,
+          url: `${url}${projectPath(project.id)}`,
+          description: project.summary,
+        })),
       },
     ],
   };

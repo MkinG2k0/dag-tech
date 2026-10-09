@@ -17,6 +17,22 @@ export type Project = {
   hrefLabel?: string;
 };
 
+export function projectPath(id: string) {
+  return `/projects/${id}`;
+}
+
+export function getProjectById(id: string) {
+  return projects.find((project) => project.id === id);
+}
+
+export function getProjectSeo(project: Project) {
+  return {
+    title: `${project.title} — кейс`,
+    description: project.summary,
+    path: projectPath(project.id),
+  };
+}
+
 export const projects: Project[] = [
   {
     id: "diary",
@@ -98,7 +114,7 @@ export const projects: Project[] = [
     shots: [
       {
         src: "/projects/ai-food-1.webp",
-        alt: "Промо AI Food в RuStore",
+        alt: "Промо AI Food: фото еды и подсчёт КБЖУ",
         kind: "phone",
       },
       {
@@ -114,6 +130,16 @@ export const projects: Project[] = [
       {
         src: "/projects/ai-food-4.webp",
         alt: "Экран калорий и БЖУ",
+        kind: "phone",
+      },
+      {
+        src: "/projects/ai-food-5.webp",
+        alt: "Отчёты по питанию за 7 дней",
+        kind: "phone",
+      },
+      {
+        src: "/projects/ai-food-6.webp",
+        alt: "Друзья и настройки AI Food",
         kind: "phone",
       },
     ],
@@ -132,7 +158,7 @@ export const projects: Project[] = [
     shots: [
       {
         src: "/projects/ai-fit-1.webp",
-        alt: "Промо приложения Подход",
+        alt: "Промо приложения Подход: тренировка с подходами",
         kind: "phone",
       },
       {
@@ -148,6 +174,16 @@ export const projects: Project[] = [
       {
         src: "/projects/ai-fit-4.webp",
         alt: "График прогресса",
+        kind: "phone",
+      },
+      {
+        src: "/projects/ai-fit-5.webp",
+        alt: "Пресеты и каталог упражнений",
+        kind: "phone",
+      },
+      {
+        src: "/projects/ai-fit-6.webp",
+        alt: "Неделя тренировок и история",
         kind: "phone",
       },
     ],
@@ -166,7 +202,7 @@ export const projects: Project[] = [
     shots: [
       {
         src: "/projects/voiceride-1.webp",
-        alt: "Промо VoiceRide Camera",
+        alt: "Промо VoiceRide: голос и руки на руле",
         kind: "phone",
       },
       {
@@ -182,6 +218,11 @@ export const projects: Project[] = [
       {
         src: "/projects/voiceride-4.webp",
         alt: "Команды старт и фото",
+        kind: "phone",
+      },
+      {
+        src: "/projects/voiceride-5.webp",
+        alt: "Записи поездок без облака",
         kind: "phone",
       },
     ],
