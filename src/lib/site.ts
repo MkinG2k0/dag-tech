@@ -1,10 +1,14 @@
+const PRODUCTION_SITE_URL = "https://dagtech.tech";
+
 export function getSiteUrl() {
   if (process.env.NEXT_PUBLIC_SITE_URL) {
     return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
   }
 
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  // Prefer the custom domain so robots/canonical/icons point at dagtech.tech,
+  // not the *.vercel.app mirror (Yandex indexes the Host from robots.txt).
+  if (process.env.VERCEL_ENV === "production" || process.env.NODE_ENV === "production") {
+    return PRODUCTION_SITE_URL;
   }
 
   if (process.env.VERCEL_URL) {

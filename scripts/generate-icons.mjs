@@ -1,4 +1,4 @@
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, unlinkSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -6,7 +6,8 @@ import pngToIco from "png-to-ico";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const appDir = join(root, "src", "app");
-const publicIcons = join(root, "public", "icons");
+const publicDir = join(root, "public");
+const publicIcons = join(publicDir, "icons");
 
 const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
@@ -28,21 +29,32 @@ async function png(size) {
 
 mkdirSync(publicIcons, { recursive: true });
 
-const [png16, png32, png48, png180, png192, png512] = await Promise.all([
+const [png16, png32, png48, png120, png180, png192, png512] = await Promise.all([
   png(16),
   png(32),
   png(48),
+  png(120),
   png(180),
   png(192),
   png(512),
 ]);
 
-writeFileSync(join(appDir, "icon.svg"), svg);
-writeFileSync(join(appDir, "apple-icon.png"), png180);
+// Clean public paths for search engines (no Next.js cache-bust query hashes).
+writeFileSync(join(publicDir, "favicon.svg"), svg);
+writeFileSync(join(publicDir, "favicon-120.png"), png120);
+writeFileSync(join(publicDir, "apple-touch-icon.png"), png180);
 writeFileSync(join(publicIcons, "icon-192.png"), png192);
 writeFileSync(join(publicIcons, "icon-512.png"), png512);
 
 const ico = await pngToIco([png16, png32, png48]);
-writeFileSync(join(appDir, "favicon.ico"), ico);
+writeFileSync(join(publicDir, "favicon.ico"), ico);
 
-console.log("Generated favicon.ico, icon.svg, apple-icon.png, public/icons/*");
+// Remove App Router file-based icons so Next does not inject hashed ?favicon.* links.
+for (const name of ["favicon.ico", "icon.svg", "apple-icon.png"]) {
+  const path = join(appDir, name);
+  if (existsSync(path)) unlinkSync(path);
+}
+
+console.log(
+  "Generated public/favicon.ico, favicon.svg, favicon-120.png, apple-touch-icon.png, icons/*",
+);

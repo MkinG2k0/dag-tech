@@ -23,4 +23,4 @@ npm run dev
 
 ## SEO
 
-После деплоя укажите продакшен-домен в `NEXT_PUBLIC_SITE_URL`.
+В Vercel задайте `NEXT_PUBLIC_SITE_URL=https://dagtech.tech` (не `*.vercel.app`), иначе canonical/Host уйдут на зеркало и Яндекс может не взять фавикон.

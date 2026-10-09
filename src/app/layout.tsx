@@ -36,6 +36,16 @@ export const metadata: Metadata = {
   creator: siteConfig.name,
   publisher: siteConfig.name,
   category: "technology",
+  // Absolute, hash-free favicon URLs — required for Yandex search snippets.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-120.png", sizes: "120x120", type: "image/png" },
+    ],
+    shortcut: [{ url: "/favicon.ico", type: "image/x-icon" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   alternates: {
     canonical: "/",
     languages: {
