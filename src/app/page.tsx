@@ -91,11 +91,11 @@ export default function Home() {
             </div>
             <div className="stats glass" data-reveal data-i="4">
               <div>
-                <b>от 200 000 ₽</b>
+                <b>от 50 000 ₽</b>
                 <span>старт проекта</span>
               </div>
               <div>
-                <b>2–4 недели</b>
+                <b>1–4 недели</b>
                 <span>типичный MVP</span>
               </div>
               <div>
